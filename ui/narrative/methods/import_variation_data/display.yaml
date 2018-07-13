@@ -1,0 +1,45 @@
+#
+# define display information
+#
+name: Variation Data Importer
+
+tooltip: |
+    Import variation data.
+
+screenshots: []
+
+icon: icon.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    input_file_path :
+        ui-name : |
+            Input file path
+        short-hint : |
+            The path of your SNP input file.
+        long-hint  : |
+            The path of your SNP input file
+    will_perform_gwas :
+        ui-name : |
+            GWAS analysis intended
+        short-hint : |
+            Select if GWAS analysis is intended with this data.  
+description : |
+    <p>This method will validate and import a VCF file.</p>
