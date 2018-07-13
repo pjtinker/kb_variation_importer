@@ -89,7 +89,8 @@ class kb_variation_importerTest(unittest.TestCase):
         params = {
             'workspace_name' : self.getWsName(),
             'input_file_path' : '/kb/module/data/test.vcf',
-            'will_perform_gwas' : 0
+            'will_perform_gwas' : 0,
+            'command_line_args' : "--recode12;--transpose"
         }
         print(params)
         ret = self.getImpl().import_snp_data(self.getContext(), params)[0]

@@ -86,7 +86,11 @@ class kb_variation_importer:
         plink_cmd = ["plink"]
         plink_cmd.append('--vcf')
         plink_cmd.append(vcf_path)
+        cmds = params['command_line_args'].split(';')
+        for cmd in cmds:
+            plink_cmd.append(cmd)
         plink_cmd.append('--freq')
+
         plink_cmd.append('--out')
         plink_cmd.append('frequencies')
         print("PLINK arguments: {}".format(plink_cmd))
@@ -117,10 +121,8 @@ class kb_variation_importer:
         if p.returncode != 0:
             raise ValueError("Error running PLINK, return code: " + str(p.returncode))
         # TODO: correct for the user supplied output file name.  Should I allow them to name?
-        # if not os.path.isfile(many_forward_reads_file_path+".nsq") and not os.path.isfile(many_forward_reads_file_path+".00.nsq"):
-        #     raise ValueError("makeblastdb failed to create DB file '"+many_forward_reads_file_path+".nsq'")
-        # elif not os.path.getsize(many_forward_reads_file_path+".nsq") > 0 and not os.path.getsize(many_forward_reads_file_path+".00.nsq") > 0:
-        #     raise ValueError("makeblastdb created empty DB file '"+many_forward_reads_file_path+".nsq'") 
+        if not os.path.isfile(STORAGE_DIR+"frequencies.frq"):
+            raise ValueError("PLINK failed to create frequency file '"+STORAGE_DIR+"frequencies.frq'")
         
         return
         

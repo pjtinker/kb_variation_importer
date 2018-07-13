@@ -41,5 +41,10 @@ parameters :
             GWAS analysis intended
         short-hint : |
             Select if GWAS analysis is intended with this data.  
+    command_line_args :
+        ui-name : |
+            Command line arguments
+        short-hint : |
+            Semi-colon delimited command line arguments to be passed to PLINKv1.9
 description : |
     <p>This method will validate and import a VCF file.</p>
