@@ -46,14 +46,16 @@ class kb_variation_importer:
         try:
             f = open(vcf_path, "r")
         except Exception as e:
+            print("Error opening file: {}".format(e))
             raise InvalidVCFError(vcf_path, e)
-
+        
         line = f.readline()
         tokens = line.split('=')
         f.close()
         if(tokens[0] != "##fileformat" or int(tokens[1][4]) != 4):
             # TODO: Add messages based on incorrect VCF version or basic formatting error
             # TODO: add additional validation procedures
+            print("{} format is invalid!".format(vcf_path.split('/')[-1]))
             raise InvalidVCFError(vcf_path, "{} format is invalid!".format(vcf_path.split('/')[-1]))
 
         vcf_version = tokens[1][4:7]
@@ -122,7 +124,7 @@ class kb_variation_importer:
             raise ValueError("Error running PLINK, return code: " + str(p.returncode))
         # TODO: correct for the user supplied output file name.  Should I allow them to name?
         if not os.path.isfile(STORAGE_DIR+"frequencies.frq"):
-            raise ValueError("PLINK failed to create frequency file '"+STORAGE_DIR+"frequencies.frq'")
+            raise ValueError("PLINK failed to create frequency file {} frequencies.frq".format(STORAGE_DIR))
         
         return
         
