@@ -153,7 +153,7 @@ class kb_variation_importer:
         # ctx is the context object
         # return variables are: returnVal
         #BEGIN import_snp_data
-        
+        print("Params passed to import_snp_data: {}".format(import_snp_params))
         try:
             self.generate_vcf_stats(import_snp_params, import_snp_params['input_file_path'])
         except Exception as e:
