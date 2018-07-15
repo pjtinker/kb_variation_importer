@@ -88,9 +88,10 @@ class kb_variation_importer:
         plink_cmd = ["plink"]
         plink_cmd.append('--vcf')
         plink_cmd.append(vcf_path)
-        cmds = params['command_line_args'].split(';')
-        for cmd in cmds:
-            plink_cmd.append(cmd)
+        if(params['command_line_args'] is not None):
+            cmds = params['command_line_args'].split(';')
+            for cmd in cmds:
+                plink_cmd.append(cmd)
         plink_cmd.append('--freq')
 
         plink_cmd.append('--out')
