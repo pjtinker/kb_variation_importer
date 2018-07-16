@@ -3,6 +3,8 @@
 import os 
 import subprocess
 import uuid
+
+from kb_variation_importer.Utils import variation_importer_utils
 from DataFileUtil.DataFileUtilClient import DataFileUtil
 from KBaseReport.KBaseReportClient import KBaseReport
 
@@ -36,98 +38,9 @@ class kb_variation_importer:
     #BEGIN_CLASS_HEADER
     vcf_version = None
 
-    def validate_vcf(self, vcf_path):
-        """
-            :param vcf_path: string defining directory of VCF file
-        """
-        #BEGIN validate_vcf
-        # TODO determine size of file.  May want to use HDF5 for
-        print('\nValidating VCF...')
-        try:
-            f = open(vcf_path, "r")
-        except Exception as e:
-            print("Error opening file: {}".format(e))
-            raise InvalidVCFError(vcf_path, e)
-        
-        line = f.readline()
-        tokens = line.split('=')
-        f.close()
-        if(tokens[0] != "##fileformat" or int(tokens[1][4]) != 4):
-            # TODO: Add messages based on incorrect VCF version or basic formatting error
-            # TODO: add additional validation procedures
-            print("{} format is invalid!".format(vcf_path.split('/')[-1]))
-            raise InvalidVCFError(vcf_path, "{} format is invalid!".format(vcf_path.split('/')[-1]))
+ 
 
-        vcf_version = tokens[1][4:7]
-        print("Valid VCF file, version: {}".format(vcf_version))
-        self.vcf_version = vcf_version
-        #END validate_vcf
 
-        return 
-
-    def generate_vcf_stats(self, params, vcf_path):
-        """
-            :param commments go here
-        """
-        #BEGIN generate_vcf_stats
-        
-        if(not os.path.isdir(STORAGE_DIR)):
-            print("\nCreating storage directory {}...".format(STORAGE_DIR))
-            try:
-                os.mkdir(STORAGE_DIR)
-            except Exception as e:
-                raise ValueError(e)
-
-        print("Results will be written to {}".format(STORAGE_DIR))
-        try:
-            self.validate_vcf(vcf_path)
-        except InvalidVCFError as ive:
-            raise ValueError(ive.message)
-
-        ## TODO: Use params to build linux command
-        plink_cmd = ["plink"]
-        plink_cmd.append('--vcf')
-        plink_cmd.append(vcf_path)
-        if(params['command_line_args'] is not None):
-            cmds = params['command_line_args'].split(';')
-            for cmd in cmds:
-                plink_cmd.append(cmd)
-        plink_cmd.append('--freq')
-
-        plink_cmd.append('--out')
-        plink_cmd.append('frequencies')
-        print("PLINK arguments: {}".format(plink_cmd))
-
-        plink_output = []
-        p = subprocess.Popen(plink_cmd, \
-                            cwd = STORAGE_DIR, \
-                            stdout = subprocess.PIPE, \
-                            stderr = subprocess.STDOUT, \
-                            shell = False)
-        while True:
-            line = p.stdout.readline()
-            if not line: break
-            #print(line.replace('\n', ''))
-            tokens = line.split(':')
-            if(tokens[0] == 'Error'):
-                raise ValueError('PLINK 1.9 error: ' + line)
-            elif(tokens[0] == 'Warning'):
-                plink_output.append(line)
-                print(line)
-            elif(tokens[0] == 'Note'):
-                plink_output.append(line)
-                print(line)
-        
-        p.stdout.close()
-        p.wait()
-
-        if p.returncode != 0:
-            raise ValueError("Error running PLINK, return code: " + str(p.returncode))
-        # TODO: correct for the user supplied output file name.  Should I allow them to name?
-        if not os.path.isfile(STORAGE_DIR+"frequencies.frq"):
-            raise ValueError("PLINK failed to create frequency file {} frequencies.frq".format(STORAGE_DIR))
-        
-        return
         
         #END generate_vcf_stats
     #END_CLASS_HEADER
@@ -154,21 +67,26 @@ class kb_variation_importer:
         # ctx is the context object
         # return variables are: returnVal
         #BEGIN import_snp_data
+        variation_utils = variation_importer_utils.variation_importer_utils(STORAGE_DIR)
         print("Params passed to import_snp_data: {}".format(import_snp_params))
         try:
-            self.generate_vcf_stats(import_snp_params, import_snp_params['input_file_path'])
+            variation_utils.generate_vcf_stats(import_snp_params)
         except Exception as e:
+            print("Error importing variation data!")
             raise ValueError(e)
 
         file_extensions = ['frq', 'log']
         indexHTML = "<head><body> "
         #for ext in file_extensions:
-        indexHTML += """
-                <a href="./frequencies.frq">Frequencies</a>
-                <a href="./frequencies.log">Log</a>
-            </body>
-        </head>
-        """
+        indexHTML += "<a href='{}'>Frequencies</a>".format(STORAGE_DIR + "frequencies.frq")
+        indexHTML += "<a href='{}'>Log</a>".format(STORAGE_DIR + "frequencies.log") 
+        indexHTML += "</body></head>"
+        # indexHTML += """
+        #         <a href="./frequencies.frq">Frequencies</a>
+        #         <a href="./frequencies.log">Log</a>
+        #     </body>
+        # </head>
+        # """
         with open(STORAGE_DIR + '/index.html', 'w') as html:
             html.write(str(indexHTML))
         dfu = DataFileUtil(self.callback_url)
@@ -186,7 +104,7 @@ class kb_variation_importer:
                      'file_links': [],
                      'html_links': [{'shock_id': html_upload_ret['shock_id'],
                                     'name': 'index.html',
-                                    'label': 'Save promoter_download.zip'
+                                    'label': 'View generated files'
                                     }
                                    ],
                      'html_window_height': 220,
