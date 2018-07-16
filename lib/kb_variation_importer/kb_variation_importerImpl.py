@@ -36,13 +36,7 @@ class kb_variation_importer:
     GIT_COMMIT_HASH = ""
 
     #BEGIN_CLASS_HEADER
-    vcf_version = None
 
- 
-
-
-        
-        #END generate_vcf_stats
     #END_CLASS_HEADER
 
     # config contains contents of config file in a hash or None if it couldn't
@@ -69,8 +63,9 @@ class kb_variation_importer:
         #BEGIN import_snp_data
         variation_utils = variation_importer_utils.variation_importer_utils(STORAGE_DIR)
         print("Params passed to import_snp_data: {}".format(import_snp_params))
+        vcf_version = None
         try:
-            variation_utils.generate_vcf_stats(import_snp_params)
+            vcf_version = variation_utils.generate_vcf_stats(import_snp_params)
         except Exception as e:
             print("Error importing variation data!")
             raise ValueError(e)
@@ -78,8 +73,8 @@ class kb_variation_importer:
         file_extensions = ['frq', 'log']
         indexHTML = "<head><body> "
         #for ext in file_extensions:
-        indexHTML += "<a href='{}'>Frequencies</a>".format(STORAGE_DIR + "frequencies.frq")
-        indexHTML += "<a href='{}'>Log</a>".format(STORAGE_DIR + "frequencies.log") 
+        indexHTML += "<a href='./frequencies.frq'>Frequencies</a>"
+        indexHTML += "<a href='./frequencies.log'>Log</a>"
         indexHTML += "</body></head>"
         # indexHTML += """
         #         <a href="./frequencies.frq">Frequencies</a>
@@ -116,7 +111,7 @@ class kb_variation_importer:
         report_info = report.create_extended_report(reportObj)
         returnVal = { 'report_name': report_info['name'], 
                       'report_ref': report_info['ref'],
-                      'vcf_version' : self.vcf_version
+                      'vcf_version' : vcf_version
                      }  
         
         if not isinstance(returnVal, dict):
