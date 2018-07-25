@@ -17,6 +17,7 @@ def log(message, prefix_newline=False):
     """Logging function, provides a hook to suppress or redirect log messages."""
     print(('\n' if prefix_newline else '') + '{0:.2f}'.format(time.time()) + ': ' + str(message))
 
+#TODO: All manner of input validation checks.
 
 class variation_importer_utils:
 
@@ -50,7 +51,7 @@ class variation_importer_utils:
 
         return vcf_version   
 
-    def generate_vcf_stats(self, params):
+    def generate_vcf_stats(self, cmd_line_args, scratch_file_path):
         """
             :param commments go here
         """
@@ -64,22 +65,26 @@ class variation_importer_utils:
 
         print("Results will be written to {}".format(self.storage_dir))
         try:
-            self._validate_vcf(params['input_file_path'])
+            self._validate_vcf(scratch_file_path)
         except InvalidVCFError as ive:
             raise ValueError(ive.message)
 
         ## TODO: Validate user supplied params and build PLINK command
         plink_cmd = ["plink"]
         plink_cmd.append('--vcf')
-        plink_cmd.append(params['input_file_path'])
-        if(params['command_line_args'] is not None):
-            cmds = params['command_line_args'].split(';')
+        plink_cmd.append(scratch_file_path)
+        if(cmd_line_args is not None):
+            cmds = cmd_line_args.split(';')
             for cmd in cmds:
                 plink_cmd.append(cmd)
+        # plink_cmd.append('--recode12')
+        # plink_cmd.append('transpose')
+        # plink_cmd.append('--output-missing-genotype')
+        # plink_cmd.append("0")
         plink_cmd.append('--freq')
-
         plink_cmd.append('--out')
         plink_cmd.append('frequencies')
+
         print("PLINK arguments: {}".format(plink_cmd))
 
         plink_output = []

@@ -4,7 +4,7 @@ import os  # noqa: F401
 import json  # noqa: F401
 import time
 import requests
-
+import shutil
 from os import environ
 try:
     from ConfigParser import ConfigParser  # py2
@@ -13,6 +13,8 @@ except:
 
 from pprint import pprint  # noqa: F401
 
+from DataFileUtil.DataFileUtilClient import DataFileUtil
+from mock import patch
 from biokbase.workspace.client import Workspace as workspaceService
 from kb_variation_importer.kb_variation_importerImpl import kb_variation_importer
 from kb_variation_importer.kb_variation_importerServer import MethodContext
@@ -75,7 +77,16 @@ class kb_variation_importerTest(unittest.TestCase):
     def getContext(self):
         return self.__class__.ctx
 
+    @staticmethod
+    def fake_staging_download(params):
+        scratch = '/kb/module/work/tmp/'
+        inpath = params['staging_file_subdir_path']
+        shutil.copy('/kb/module/data/'+inpath, scratch+inpath)
+        return {'copy_file_path': scratch+inpath}
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
+    @patch.object(DataFileUtil, "download_staging_file",
+                  new=fake_staging_download)
+    
     def test_your_method(self):
         # Prepare test objects in workspace if needed using
         # self.getWsClient().save_objects({'workspace': self.getWsName(),
@@ -88,7 +99,7 @@ class kb_variation_importerTest(unittest.TestCase):
         # self.assertEqual(ret[...], ...) or other unittest methods
         params = {
             'workspace_name' : self.getWsName(),
-            'input_file_path' : '/kb/module/data/test.vcf',
+            'staging_file_subdir_path' : 'test.vcf',
             'will_perform_gwas' : 0,
             'command_line_args' : None
         }

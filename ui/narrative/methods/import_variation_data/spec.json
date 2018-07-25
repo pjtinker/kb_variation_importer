@@ -11,14 +11,16 @@
     },
     "parameters": [ 
         {
-            "id": "input_file_path",
+            "id": "staging_file_subdir_path",
             "optional": true,
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "" ],
-            "field_type": "text",
+            "field_type": "dynamic-dropdown",
             "text_options": {
-            }
+                "data_source": "ftp_staging"
+            },
+            "data_source": "ftp_staging"
         },
         {
             "id": "will_perform_gwas",
@@ -55,8 +57,8 @@
                     "target_property": "workspace_name"
                 },
                 {
-                    "input_parameter": "input_file_path",
-                    "target_property": "input_file_path"
+                    "input_parameter": "staging_file_subdir_path",
+                    "target_property": "staging_file_subdir_path"
                 },
                 {
                     "input_parameter": "command_line_args",

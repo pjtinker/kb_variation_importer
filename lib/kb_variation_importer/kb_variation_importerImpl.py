@@ -13,6 +13,7 @@ class InvalidVCFError(Exception):
         self.file_path = file_path
         self.message = message
 STORAGE_DIR = "/kb/module/work/tmp/html/"
+
 #END_HEADER
 
 
@@ -46,6 +47,7 @@ class kb_variation_importer:
         self.config = config
         self.shared_folder = config['scratch']
         self.callback_url = os.environ['SDK_CALLBACK_URL']
+        self.dfu = DataFileUtil(self.callback_url)
         #END_CONSTRUCTOR
         pass
 
@@ -53,7 +55,7 @@ class kb_variation_importer:
         """
         :param workspace_name: instance of String
         :param import_snp_params: instance of type "import_snp_params" (Input
-        parameters) -> structure: parameter "input_file_path" of String,
+        parameters) -> structure: parameter "staging_file_subdir_path" of String,
         parameter "will_perform_gwas" of Int
         :returns: instance of type "import_snp_results" (Output results) ->
         structure:
@@ -64,47 +66,47 @@ class kb_variation_importer:
         variation_utils = variation_importer_utils.variation_importer_utils(STORAGE_DIR)
         print("Params passed to import_snp_data: {}".format(import_snp_params))
         vcf_version = None
+        scratch_file_path = self.dfu.download_staging_file(
+            {'staging_file_subdir_path': import_snp_params['staging_file_subdir_path']
+        }).get('copy_file_path')
         try:
-            vcf_version = variation_utils.generate_vcf_stats(import_snp_params)
+            vcf_version = variation_utils.generate_vcf_stats(import_snp_params['command_line_args'], scratch_file_path)
         except Exception as e:
             print("Error importing variation data!")
             raise ValueError(e)
 
         file_extensions = ['frq', 'log']
         indexHTML = "<head><body> "
-        #for ext in file_extensions:
-        indexHTML += "<a href='./frequencies.frq'>Frequencies</a>"
+        #TODO: Create links for all relevant files generated. 
+        indexHTML += "<a href='./frequencies.frq'>Frequencies</a> "
         indexHTML += "<a href='./frequencies.log'>Log</a>"
         indexHTML += "</body></head>"
-        # indexHTML += """
-        #         <a href="./frequencies.frq">Frequencies</a>
-        #         <a href="./frequencies.log">Log</a>
-        #     </body>
-        # </head>
-        # """
+
         with open(STORAGE_DIR + '/index.html', 'w') as html:
             html.write(str(indexHTML))
-        dfu = DataFileUtil(self.callback_url)
+
+        
 
         try:
-            html_upload_ret = dfu.file_to_shock({'file_path': STORAGE_DIR, 'make_handle': 0, 'pack': 'zip'})
+            html_upload_ret = self.dfu.file_to_shock({'file_path': STORAGE_DIR, 'make_handle': 0, 'pack': 'zip'})
+            print("File to shock info: {}".format(html_upload_ret))
         except:
             raise ValueError('Error uploading HTML to shock')
 
-        report_name = 'vcf_summary_stats_' + str(uuid.uuid4())
         reportObj = {'objects_created': [],
                      'message': '',
-                     'direct_html': None,
+                     'direct_html': None, #Is this where to include html displayed in narrative?
                      'direct_html_index': 0,
                      'file_links': [],
-                     'html_links': [{'shock_id': html_upload_ret['shock_id'],
+                     'html_links': [{
+                                    'shock_id': html_upload_ret['shock_id'],
                                     'name': 'index.html',
                                     'label': 'View generated files'
                                     }
                                    ],
                      'html_window_height': 220,
                      'workspace_name': import_snp_params['workspace_name'],
-                     'report_object_name': report_name
+                     'report_object_name': 'vcf_summary_stats_' + str(uuid.uuid4())
                      }
 
         report = KBaseReport(self.callback_url, token=ctx['token'])

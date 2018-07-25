@@ -29,7 +29,7 @@ suggestions:
 # Configure the display and description of parameters
 #
 parameters :
-    input_file_path :
+    staging_file_subdir_path :
         ui-name : |
             Input file path
         short-hint : |
