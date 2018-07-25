@@ -51,7 +51,7 @@ class variation_importer_utils:
 
         return vcf_version   
 
-    def generate_vcf_stats(self, cmd_line_args, scratch_file_path):
+    def generate_vcf_stats(self, cmd_line_args, scratch_subdir_path):
         """
             :param commments go here
         """
@@ -65,14 +65,14 @@ class variation_importer_utils:
 
         print("Results will be written to {}".format(self.storage_dir))
         try:
-            self._validate_vcf(scratch_file_path)
+            self._validate_vcf(scratch_subdir_path)
         except InvalidVCFError as ive:
             raise ValueError(ive.message)
 
         ## TODO: Validate user supplied params and build PLINK command
         plink_cmd = ["plink"]
         plink_cmd.append('--vcf')
-        plink_cmd.append(scratch_file_path)
+        plink_cmd.append(scratch_subdir_path)
         if(cmd_line_args is not None):
             cmds = cmd_line_args.split(';')
             for cmd in cmds:

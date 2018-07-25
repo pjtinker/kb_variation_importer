@@ -16,11 +16,9 @@
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "" ],
-            "field_type": "dynamic-dropdown",
+            "field_type": "text",
             "text_options": {
-                "data_source": "ftp_staging"
-            },
-            "data_source": "ftp_staging"
+            }
         },
         {
             "id": "will_perform_gwas",
