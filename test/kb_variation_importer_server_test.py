@@ -84,8 +84,8 @@ class kb_variation_importerTest(unittest.TestCase):
         shutil.copy('/kb/module/data/'+inpath, scratch+inpath)
         return {'copy_file_path': scratch+inpath}
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
-    @patch.object(DataFileUtil, "download_staging_file",
-                  new=fake_staging_download)
+    # @patch.object(DataFileUtil, "download_staging_file",
+    #               new=fake_staging_download)
     
     def test_your_method(self):
         # Prepare test objects in workspace if needed using
@@ -97,14 +97,14 @@ class kb_variation_importerTest(unittest.TestCase):
         #
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
-        params = {
-            'workspace_name' : self.getWsName(),
-            'staging_file_subdir_path' : 'test.vcf',
-            'will_perform_gwas' : 0,
-            'command_line_args' : None
-        }
-        print(params)
-        ret = self.getImpl().import_snp_data(self.getContext(), params)[0]
-        print(ret)
-        self.assertIsNotNone(ret['report_ref'], ret['report_name'])
+        # params = {
+        #     'workspace_name' : self.getWsName(),
+        #     'staging_file_subdir_path' : 'test.vcf',
+        #     'will_perform_gwas' : 0,
+        #     'command_line_args' : None
+        # }
+        # print(params)
+        # ret = self.getImpl().import_snp_data(self.getContext(), params)[0]
+        # print(ret)
+        # self.assertIsNotNone(ret['report_ref'], ret['report_name'])
         pass
