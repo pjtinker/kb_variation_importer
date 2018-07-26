@@ -9,7 +9,7 @@ module kb_variation_importer {
     
     typedef structure {
         string workspace_name;
-        string input_file_path;
+        string staging_file_subdir_path;
         int will_perform_gwas;
     } import_snp_params;
 
@@ -19,6 +19,8 @@ module kb_variation_importer {
         string vcf_version;
     } snp_import_results;
 
+
     funcdef import_snp_data(import_snp_params) 
         returns (snp_import_results) authentication required;
+
 };

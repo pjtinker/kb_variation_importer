@@ -2,6 +2,7 @@ import os
 import subprocess
 import uuid
 import time
+import shutil
 
 from DataFileUtil.DataFileUtilClient import DataFileUtil
 from KBaseReport.KBaseReportClient import KBaseReport
@@ -24,13 +25,18 @@ class variation_importer_utils:
     def __init__(self, storage_dir):
         self.storage_dir = storage_dir
 
+    def pretend_download_staging_file(self, vcf_path):
+        print("Value passed to pretend_download: {}".format(vcf_path))
+        scratch = '/kb/module/work/tmp/'
+        shutil.copy('/kb/module/data/' + vcf_path, scratch + vcf_path)
+        return { 'copy_file_path': scratch + vcf_path }
 
     def _validate_vcf(self, vcf_path):
         """
             :param vcf_path: string defining directory of VCF file
         """
         # TODO determine size of file.  May want to use HDF5 
-        print('\nValidating VCF...')
+        print('\nValidating {}'.format(vcf_path))
         try:
             f = open(vcf_path, "r")
         except Exception as e:

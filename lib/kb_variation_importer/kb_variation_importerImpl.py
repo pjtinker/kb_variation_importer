@@ -45,7 +45,7 @@ class kb_variation_importer:
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
         self.config = config
-        self.shared_folder = config['scratch']
+        self.scratch_file_path = config['scratch']
         self.callback_url = os.environ['SDK_CALLBACK_URL']
         self.dfu = DataFileUtil(self.callback_url)
         #END_CONSTRUCTOR
@@ -66,9 +66,15 @@ class kb_variation_importer:
         variation_utils = variation_importer_utils.variation_importer_utils(STORAGE_DIR)
         print("Params passed to import_snp_data: {}".format(import_snp_params))
         vcf_version = None
-        scratch_file_path = self.dfu.download_staging_file(
-            {'staging_file_subdir_path': import_snp_params['staging_file_subdir_path']
-        }).get('copy_file_path')
+
+        # This is the process if staging file rights have been granted
+        # scratch_file_path = self.dfu.download_staging_file(
+        #     {'staging_file_subdir_path': import_snp_params['staging_file_subdir_path']
+        # }).get('copy_file_path')
+        scratch_file_path = variation_utils.pretend_download_staging_file(
+            import_snp_params['staging_file_subdir_path']).get('copy_file_path')
+        
+        print("Scratch file path produced by DFU: {}".format(scratch_file_path))
         try:
             vcf_version = variation_utils.generate_vcf_stats(import_snp_params['command_line_args'], scratch_file_path)
         except Exception as e:
@@ -84,8 +90,6 @@ class kb_variation_importer:
 
         with open(STORAGE_DIR + '/index.html', 'w') as html:
             html.write(str(indexHTML))
-
-        
 
         try:
             html_upload_ret = self.dfu.file_to_shock({'file_path': STORAGE_DIR, 'make_handle': 0, 'pack': 'zip'})
