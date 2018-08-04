@@ -3,6 +3,10 @@
   "type" : "sdk",
   "version_tag" : "release"
 }, {
+  "module_name" : "GenomeAnnotationAPI",
+  "type" : "sdk",
+  "version_tag" : "release"
+}, {
   "module_name" : "KBaseReport",
   "type" : "sdk",
   "version_tag" : "release"

@@ -3,11 +3,13 @@
 import os 
 import subprocess
 import uuid
+import errno
 
 from kb_variation_importer.Utils import variation_importer_utils
+
 from DataFileUtil.DataFileUtilClient import DataFileUtil
 from KBaseReport.KBaseReportClient import KBaseReport
-
+# from GenomeAnnotationAPI.GenomeAnnotationAPIServiceClient import GenomeAnnotationAPI
 class InvalidVCFError(Exception):
     def __init__(self, file_path, message):
         self.file_path = file_path
@@ -37,7 +39,19 @@ class kb_variation_importer:
     GIT_COMMIT_HASH = ""
 
     #BEGIN_CLASS_HEADER
-
+    def _mkdir_p(self, path):
+        """
+        _mkdir_p: make directory for given path
+        """
+        if not path:
+            return
+        try:
+            os.makedirs(path)
+        except OSError as exc:
+            if exc.errno == errno.EEXIST and os.path.isdir(path):
+                pass
+            else:
+                raise
     #END_CLASS_HEADER
 
     # config contains contents of config file in a hash or None if it couldn't
@@ -45,9 +59,12 @@ class kb_variation_importer:
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
         self.config = config
-        self.scratch_file_path = config['scratch']
+        self.scratch_file_path = os.path.join(config['scratch'], 'import_variation_' + str(uuid.uuid4()) + '/')
+        self._mkdir_p(self.scratch_file_path)
         self.callback_url = os.environ['SDK_CALLBACK_URL']
         self.dfu = DataFileUtil(self.callback_url)
+        self.vu = variation_importer_utils.variation_importer_utils(self.config['srv-wiz-url'], self.dfu, self.scratch_file_path)
+
         #END_CONSTRUCTOR
         pass
 
@@ -63,23 +80,33 @@ class kb_variation_importer:
         # ctx is the context object
         # return variables are: returnVal
         #BEGIN import_snp_data
-        variation_utils = variation_importer_utils.variation_importer_utils(STORAGE_DIR)
+
         print("Params passed to import_snp_data: {}".format(import_snp_params))
         vcf_version = None
 
         # This is the process if staging file rights have been granted
-        # scratch_file_path = self.dfu.download_staging_file(
+        # vcf_scratch_path = self.dfu.download_staging_file(
         #     {'staging_file_subdir_path': import_snp_params['staging_file_subdir_path']
         # }).get('copy_file_path')
-        scratch_file_path = variation_utils.pretend_download_staging_file(
-            import_snp_params['staging_file_subdir_path']).get('copy_file_path')
+        vcf_scratch_path = self.vu.pretend_download_staging_file(
+            import_snp_params['staging_file_subdir_path'], self.scratch_file_path).get('copy_file_path')
         
-        print("Scratch file path produced by DFU: {}".format(scratch_file_path))
+        print("Scratch file path produced by DFU: {}".format(vcf_scratch_path))
+        genome_ref='18590/2/8'
+
         try:
-            vcf_version = variation_utils.generate_vcf_stats(import_snp_params['command_line_args'], scratch_file_path)
+            vcf_version = self.vu.validate_vcf(vcf_scratch_path, genome_ref)
         except Exception as e:
             print("Error importing variation data!")
+            print(e)
             raise ValueError(e)
+
+        try:
+            self.vu.generate_vcf_stats(import_snp_params['command_line_args'], vcf_scratch_path, genome_ref)
+        except Exception as e:
+            print("Error generating summary statistics!")
+            print(e)
+            raise
 
         file_extensions = ['frq', 'log']
         indexHTML = "<head><body> "
@@ -87,12 +114,12 @@ class kb_variation_importer:
         indexHTML += "<a href='./frequencies.frq'>Frequencies</a> "
         indexHTML += "<a href='./frequencies.log'>Log</a>"
         indexHTML += "</body></head>"
-
-        with open(STORAGE_DIR + '/index.html', 'w') as html:
+        
+        with open(os.path.join(self.scratch_file_path, 'index.html'), 'w') as html:
             html.write(str(indexHTML))
 
         try:
-            html_upload_ret = self.dfu.file_to_shock({'file_path': STORAGE_DIR, 'make_handle': 0, 'pack': 'zip'})
+            html_upload_ret = self.dfu.file_to_shock({'file_path': self.scratch_file_path, 'make_handle': 0, 'pack': 'zip'})
             print("File to shock info: {}".format(html_upload_ret))
         except:
             raise ValueError('Error uploading HTML to shock')

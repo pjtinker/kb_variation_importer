@@ -1,0 +1,99 @@
+{
+  "contigs": {
+    "Chr5": {
+      "description": "CHROMOSOME dumped from ADB: Feb/3/09 16:10; last updated: 2007-12-20", 
+      "Ncount": 10278, 
+      "length": 26975502, 
+      "contig_id": "Chr5", 
+      "gc_content": 0.35925, 
+      "md5": "d6cb9d0b2cf3f54e5308adaa2af79e08", 
+      "name": "Chr5"
+    }, 
+    "Chr4": {
+      "description": "CHROMOSOME dumped from ADB: Feb/3/09 16:10; last updated: 2007-12-20", 
+      "Ncount": 3030, 
+      "length": 18585056, 
+      "contig_id": "Chr4", 
+      "gc_content": 0.36198, 
+      "md5": "21f56163f7e34510232448b14fce7578", 
+      "name": "Chr4"
+    }, 
+    "Chr3": {
+      "description": "CHROMOSOME dumped from ADB: Feb/3/09 16:10; last updated: 2007-12-20", 
+      "Ncount": 5966, 
+      "length": 23459830, 
+      "contig_id": "Chr3", 
+      "gc_content": 0.36322, 
+      "md5": "bd4bc6259143f4b4f3921367c28d07ff", 
+      "name": "Chr3"
+    }, 
+    "Chr2": {
+      "description": "CHROMOSOME dumped from ADB: Feb/3/09 16:10; last updated: 2007-12-20", 
+      "Ncount": 2506, 
+      "length": 19698289, 
+      "contig_id": "Chr2", 
+      "gc_content": 0.3586, 
+      "md5": "837e6cf18d30dda428a08ac2cb4061f2", 
+      "name": "Chr2"
+    }, 
+    "Chr1": {
+      "description": "CHROMOSOME dumped from ADB: Feb/3/09 16:9; last updated: 2007-12-20", 
+      "Ncount": 163958, 
+      "length": 30427671, 
+      "contig_id": "Chr1", 
+      "gc_content": 0.3568, 
+      "md5": "66bcd0ba0c2303c318cfa2742cfb4203", 
+      "name": "Chr1"
+    }, 
+    "ChrC": {
+      "name": "ChrC", 
+      "description": "CHROMOSOME dumped from ADB: Feb/3/09 16:10; last updated: 2005-06-03", 
+      "length": 154478, 
+      "contig_id": "ChrC", 
+      "gc_content": 0.36294, 
+      "md5": "23eeba58f0f2b65fcfaeb887856c8bfb"
+    }, 
+    "ChrM": {
+      "name": "ChrM", 
+      "description": "CHROMOSOME dumped from ADB: Feb/3/09 16:10; last updated: 2005-06-03", 
+      "length": 366924, 
+      "contig_id": "ChrM", 
+      "gc_content": 0.44769, 
+      "md5": "41eb7f2aefd77bd60d1d204a5e2aa876"
+    }
+  }, 
+  "assembly_id": "Athaliana_PhytozomeV11_TAIR10_assembly", 
+  "fasta_handle_info": {
+    "node_file_name": "Athaliana_167_TAIR9.fa", 
+    "handle": {
+      "url": "https://appdev.kbase.us/services/shock-api", 
+      "file_name": "Athaliana_167_TAIR9.fa", 
+      "remote_md5": "513e5ef30845ed754b00816a99abbf8e", 
+      "hid": "KBH_30014", 
+      "type": "shock", 
+      "id": "182ae625-c583-4ead-94df-01f10bf92b1e"
+    }, 
+    "shock_id": "182ae625-c583-4ead-94df-01f10bf92b1e", 
+    "size": 121183059
+  }, 
+  "fasta_handle_ref": "KBH_30014", 
+  "num_contigs": 7, 
+  "base_counts": {
+    "A": 38223602, 
+    "C": 21551439, 
+    "D": 1, 
+    "G": 21528650, 
+    "K": 63, 
+    "M": 84, 
+    "N": 185738, 
+    "S": 34, 
+    "R": 47, 
+    "T": 38177852, 
+    "W": 144, 
+    "Y": 96
+  }, 
+  "gc_content": 0.36, 
+  "type": "Unknown", 
+  "dna_size": 119667750, 
+  "md5": "b6611ff00b63eb97c42c2960cacda317"
+}

@@ -20,6 +20,10 @@ RUN wget https://github.com/vcftools/vcftools/tarball/master/vcftools-vcftools-v
     && make \
     && make install
 
+RUN wget https://github.com/EBIvariation/vcf-validator/releases/download/v0.8/vcf_validator_linux \
+    && chmod 755 vcf_validator_linux \
+    && mv vcf_validator_linux /kb/deployment/bin 
+    
 # -----------------------------------------
 
 COPY ./ /kb/module
