@@ -4,7 +4,7 @@ import os
 import subprocess
 import uuid
 import errno
-
+import json
 from kb_variation_importer.Utils import variation_importer_utils
 
 from DataFileUtil.DataFileUtilClient import DataFileUtil
@@ -46,7 +46,7 @@ class kb_variation_importer:
         if not path:
             return
         try:
-            os.makedirs(path)
+            os.mkdir(path)
         except OSError as exc:
             if exc.errno == errno.EEXIST and os.path.isdir(path):
                 pass
@@ -59,14 +59,12 @@ class kb_variation_importer:
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
         self.config = config
-        self.scratch_file_path = os.path.join(config['scratch'], 'import_variation_' + str(uuid.uuid4()) + '/')
+        self.scratch_file_path = os.path.join(config['scratch'], 'import_variation/')
+        print("scratch_file_path in Impl {}".format(self.scratch_file_path))
         self._mkdir_p(self.scratch_file_path)
         self.callback_url = os.environ['SDK_CALLBACK_URL']
-        self.dfu = DataFileUtil(self.callback_url)
-        self.vu = variation_importer_utils.variation_importer_utils(self.config['srv-wiz-url'], self.dfu, self.scratch_file_path)
-
         #END_CONSTRUCTOR
-        pass
+
 
     def import_snp_data(self, ctx, import_snp_params):
         """
@@ -81,32 +79,57 @@ class kb_variation_importer:
         # return variables are: returnVal
         #BEGIN import_snp_data
 
+        returnVal = {}
+        self.vu = variation_importer_utils.variation_importer_utils(ctx, self.config['srv-wiz-url'], self.callback_url, self.scratch_file_path)
+
         print("Params passed to import_snp_data: {}".format(import_snp_params))
         vcf_version = None
 
         # This is the process if staging file rights have been granted
-        # vcf_scratch_path = self.dfu.download_staging_file(
+        # vcf_staging_area_path = self.dfu.download_staging_file(
         #     {'staging_file_subdir_path': import_snp_params['staging_file_subdir_path']
         # }).get('copy_file_path')
-        vcf_scratch_path = self.vu.pretend_download_staging_file(
+        vcf_staging_area_path = self.vu.pretend_download_staging_file(
             import_snp_params['staging_file_subdir_path'], self.scratch_file_path).get('copy_file_path')
         
-        print("Scratch file path produced by DFU: {}".format(vcf_scratch_path))
+        print("Scratch file path produced by DFU: {}".format(vcf_staging_area_path))
+
+        # TODO: Get genome reference.  How?
         genome_ref='18590/2/8'
 
         try:
-            vcf_version = self.vu.validate_vcf(vcf_scratch_path, genome_ref)
+            variation_results = self.vu.validate_vcf(vcf_staging_area_path, genome_ref)
         except Exception as e:
             print("Error importing variation data!")
             print(e)
             raise ValueError(e)
 
+        if variation_results.get('valid_vcf') is False:
+            try:
+                html_links = self.vu.build_invalid_vcf_report(import_snp_params['workspace_name'], variation_results, self.scratch_file_path)
+                report = self.vu.build_report(import_snp_params['workspace_name'], html_links)
+                return [report]
+            except Exception as e:
+                print("Error generating Invalid VCF Report!")
+                raise ValueError(e)
         try:
-            self.vu.generate_vcf_stats(import_snp_params['command_line_args'], vcf_scratch_path, genome_ref)
+            stat_results = self.vu.generate_vcf_stats(import_snp_params['command_line_args'], vcf_staging_area_path, genome_ref)
         except Exception as e:
             print("Error generating summary statistics!")
             print(e)
             raise
+        kinship_matrix = self.vu.create_fake_kinship_matrix()
+        variation_results['genome_ref'] = genome_ref
+        try:
+            variation_ref = self.vu.save_variation_to_ws(
+                                                        import_snp_params['workspace_name'], 
+                                                        variation_results,
+                                                        vcf_staging_area_path,
+                                                        kinship_matrix
+                                                        )
+        except Exception as e:
+            print("Error saving Variation object to ws!")
+            raise ValueError(e)
 
         file_extensions = ['frq', 'log']
         indexHTML = "<head><body> "
@@ -124,17 +147,16 @@ class kb_variation_importer:
         except:
             raise ValueError('Error uploading HTML to shock')
 
-        reportObj = {'objects_created': [],
+        reportObj = {'objects_created': [], # Do I put the Variation object here?
                      'message': '',
-                     'direct_html': None, #Is this where to include html displayed in narrative?
+                     'direct_html': None, # Is this where to include html displayed in narrative?
                      'direct_html_index': 0,
                      'file_links': [],
                      'html_links': [{
                                     'shock_id': html_upload_ret['shock_id'],
                                     'name': 'index.html',
                                     'label': 'View generated files'
-                                    }
-                                   ],
+                                    }],
                      'html_window_height': 220,
                      'workspace_name': import_snp_params['workspace_name'],
                      'report_object_name': 'vcf_summary_stats_' + str(uuid.uuid4())

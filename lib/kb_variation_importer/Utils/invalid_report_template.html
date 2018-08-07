@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Invalid VCF Report</title>
+        <script type="text/javascript" src="js/jquery/js/jquery-1.10.2.min.js"></script>
+
+    </head>
+    <body id=body style=''>
+        <div id='main_panel'>
+            <h1>VCF File Version</h1>
+            <p>###VCF_VERSION###</p>
+
+            <h1>Validation Summary</h1>
+            <p>###VALIDATION_REPORT_TXT###</p>
+
+            <h1>Invalid Contigs</h1>
+            <h3>The following contigs do not match those stored in Genome object ###GENOME_REF###</h3>
+            <p>###INVALID_CONTIG_TXT###</p>
+            
+        </div>
+    </body>
+</html>
