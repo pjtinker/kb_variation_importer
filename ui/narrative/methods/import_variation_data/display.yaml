@@ -29,6 +29,11 @@ suggestions:
 # Configure the display and description of parameters
 #
 parameters :
+    genome_ref :
+        ui-name : |
+            Genome object reference
+        short-hint : |
+            Object reference format X/Y/Z
     staging_file_subdir_path :
         ui-name : |
             Input file path

@@ -7,7 +7,7 @@ MAINTAINER KBase Developer
 # installation scripts.
 
 # RUN apt-get update
-RUN curl -O https://www.cog-genomics.org/static/bin/plink180612/plink_linux_x86_64.zip \
+RUN curl -O https://www.cog-genomics.org/static/bin/plink180717/plink_linux_x86_64.zip \
     && unzip plink_linux_x86_64.zip \
     && mv plink /kb/deployment/bin 
 

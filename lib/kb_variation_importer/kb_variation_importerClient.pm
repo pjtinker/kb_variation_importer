@@ -12,6 +12,7 @@ eval {
     $get_time = sub { Time::HiRes::gettimeofday() };
 };
 
+use Bio::KBase::AuthToken;
 
 # Client version should match Impl version
 # This is a Semantic Version number,
@@ -74,6 +75,27 @@ sub new
 	push(@{$self->{headers}}, 'Kbrpc-Errordest', $self->{kbrpc_error_dest});
     }
 
+    #
+    # This module requires authentication.
+    #
+    # We create an auth token, passing through the arguments that we were (hopefully) given.
+
+    {
+	my %arg_hash2 = @args;
+	if (exists $arg_hash2{"token"}) {
+	    $self->{token} = $arg_hash2{"token"};
+	} elsif (exists $arg_hash2{"user_id"}) {
+	    my $token = Bio::KBase::AuthToken->new(@args);
+	    if (!$token->error_message) {
+	        $self->{token} = $token->token;
+	    }
+	}
+	
+	if (exists $self->{token})
+	{
+	    $self->{client}->{token} = $self->{token};
+	}
+    }
 
     my $ua = $self->{client}->ua;	 
     my $timeout = $ENV{CDMI_TIMEOUT} || (30 * 60);	 
@@ -84,6 +106,104 @@ sub new
 }
 
 
+
+
+=head2 import_snp_data
+
+  $return = $obj->import_snp_data($import_snp_params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$import_snp_params is a kb_variation_importer.import_snp_params
+$return is a kb_variation_importer.snp_import_results
+import_snp_params is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	staging_file_subdir_path has a value which is a string
+	will_perform_gwas has a value which is an int
+snp_import_results is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+	vcf_version has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$import_snp_params is a kb_variation_importer.import_snp_params
+$return is a kb_variation_importer.snp_import_results
+import_snp_params is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	staging_file_subdir_path has a value which is a string
+	will_perform_gwas has a value which is an int
+snp_import_results is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+	vcf_version has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub import_snp_data
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function import_snp_data (received $n, expecting 1)");
+    }
+    {
+	my($import_snp_params) = @args;
+
+	my @_bad_arguments;
+        (ref($import_snp_params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"import_snp_params\" (value was \"$import_snp_params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to import_snp_data:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'import_snp_data');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_variation_importer.import_snp_data",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'import_snp_data',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method import_snp_data",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'import_snp_data',
+				       );
+    }
+}
+ 
   
 sub status
 {
@@ -119,7 +239,7 @@ sub status
 sub version {
     my ($self) = @_;
     my $result = $self->{client}->call($self->{url}, $self->{headers}, {
-        method => "${last_module.module_name}.version",
+        method => "kb_variation_importer.version",
         params => [],
     });
     if ($result) {
@@ -127,16 +247,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => '${last_method.name}',
+                method_name => 'import_snp_data',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method ${last_method.name}",
+            error => "Error invoking method import_snp_data",
             status_line => $self->{client}->status_line,
-            method_name => '${last_method.name}',
+            method_name => 'import_snp_data',
         );
     }
 }
@@ -170,6 +290,79 @@ sub _validate_version {
 }
 
 =head1 TYPES
+
+
+
+=head2 import_snp_params
+
+=over 4
+
+
+
+=item Description
+
+Insert your typespec information here.
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+staging_file_subdir_path has a value which is a string
+will_perform_gwas has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+staging_file_subdir_path has a value which is a string
+will_perform_gwas has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 snp_import_results
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+vcf_version has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+vcf_version has a value which is a string
+
+
+=end text
+
+=back
 
 
 

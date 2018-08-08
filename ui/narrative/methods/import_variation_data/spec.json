@@ -11,6 +11,17 @@
     },
     "parameters": [ 
         {
+            "id": "genome_ref",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [""],
+            "field_type": "text",
+            "text_options": {
+                "valid_vs_types": [ "KBaseGenomes.Genome-8.3"]
+            }
+        },
+        {
             "id": "staging_file_subdir_path",
             "optional": true,
             "advanced": false,
@@ -56,6 +67,11 @@
                     "target_property": "workspace_name"
                 },
                 {
+                    "input_parameter": "genome_ref",
+                    "target_property": "genome_ref",
+                    "target_type_transform": "resolved-ref"
+                },
+                {
                     "input_parameter": "staging_file_subdir_path",
                     "target_property": "staging_file_subdir_path"
                 },
@@ -76,6 +92,10 @@
                 {
                     "service_method_output_path": [0,"report_ref"],
                     "target_property": "report_ref"
+                },
+                {
+                    "service_method_output_path": [0, "variation_ref"],
+                    "target_property": "variation_ref"
                 },
                 {
                     "narrative_system_variable": "workspace",

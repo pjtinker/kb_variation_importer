@@ -35,8 +35,8 @@ class kb_variation_importer:
     # the latter method is running.
     ######################################### noqa
     VERSION = "0.0.1"
-    GIT_URL = "https://github.com/pjtinker/kb_variation_importer.git"
-    GIT_COMMIT_HASH = "058c2667a5ea5420ebfc44611faf3cc4318cde3d"
+    GIT_URL = ""
+    GIT_COMMIT_HASH = ""
 
     #BEGIN_CLASS_HEADER
     def _mkdir_p(self, path):
@@ -64,18 +64,16 @@ class kb_variation_importer:
         self._mkdir_p(self.scratch_file_path)
         self.callback_url = os.environ['SDK_CALLBACK_URL']
         #END_CONSTRUCTOR
-        pass
 
 
     def import_snp_data(self, ctx, import_snp_params):
         """
-        :param import_snp_params: instance of type "import_snp_params"
-           (Insert your typespec information here.) -> structure: parameter
-           "workspace_name" of String, parameter "staging_file_subdir_path"
-           of String, parameter "will_perform_gwas" of Long
-        :returns: instance of type "snp_import_results" -> structure:
-           parameter "report_name" of String, parameter "report_ref" of
-           String, parameter "vcf_version" of String
+        :param workspace_name: instance of String
+        :param import_snp_params: instance of type "import_snp_params" (Input
+        parameters) -> structure: parameter "staging_file_subdir_path" of String,
+        parameter "will_perform_gwas" of Int
+        :returns: instance of type "import_snp_results" (Output results) ->
+        structure:
         """
         # ctx is the context object
         # return variables are: returnVal
@@ -176,12 +174,8 @@ class kb_variation_importer:
                              'returnVal is not type dict as required.')
         #END import_snp_data
 
-        # At some point might do deeper type checking...
-        if not isinstance(returnVal, dict):
-            raise ValueError('Method import_snp_data return value ' +
-                             'returnVal is not type dict as required.')
-        # return the results
         return [returnVal]
+
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",

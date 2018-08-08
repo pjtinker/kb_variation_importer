@@ -33,6 +33,20 @@ class kb_variation_importer(object):
             trust_all_ssl_certificates=trust_all_ssl_certificates,
             auth_svc=auth_svc)
 
+    def import_snp_data(self, import_snp_params, context=None):
+        """
+        :param import_snp_params: instance of type "import_snp_params"
+           (Insert your typespec information here.) -> structure: parameter
+           "workspace_name" of String, parameter "staging_file_subdir_path"
+           of String, parameter "will_perform_gwas" of Long
+        :returns: instance of type "snp_import_results" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of
+           String, parameter "vcf_version" of String
+        """
+        return self._client.call_method(
+            'kb_variation_importer.import_snp_data',
+            [import_snp_params], self._service_ver, context)
+
     def status(self, context=None):
         return self._client.call_method('kb_variation_importer.status',
                                         [], self._service_ver, context)

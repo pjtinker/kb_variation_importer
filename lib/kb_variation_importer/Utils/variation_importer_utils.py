@@ -12,7 +12,7 @@ from DataFileUtil.DataFileUtilClient import DataFileUtil
 from KBaseReport.KBaseReportClient import KBaseReport
 from GenomeAnnotationAPI.GenomeAnnotationAPIServiceClient import GenomeAnnotationAPI
 
-class InvalidVCFError(Exception):
+class InvalidVCFException(Exception):
     def __init__(self, file_path, message):
         self.file_path = file_path
         self.message = message
@@ -105,6 +105,7 @@ class variation_importer_utils:
                 if tokens[0] == "##contig":
                     contigs.append(tokens[2][:-2])
         return contigs, genotypes
+
     # Arabidopsis ref: 18590/2/8
     def _get_assembly_ref_from_genome(self, genome_ref):
         ga = GenomeAnnotationAPI(self.service_wiz_url)
@@ -113,7 +114,7 @@ class variation_importer_utils:
             assembly_object_ref = ga.get_assembly(inputs_get_assembly)
         except Exception as e:
             print("Unable to retrieve Assembly reference ID from Genome ref_id: {}".format(genome_ref))
-            raise ValueError(e)
+            raise Exception(e)
         
         return assembly_object_ref
 
@@ -129,7 +130,7 @@ class variation_importer_utils:
             f = open(vcf_file_path, "r")
         except Exception as e:
             print("Error opening file: {}".format(e))
-            raise InvalidVCFError(vcf_file_path, e)
+            raise InvalidVCFException(vcf_file_path, e)
         
         line = f.readline()
         tokens = line.split('=')
@@ -140,7 +141,7 @@ class variation_importer_utils:
             # TODO: add additional validation procedures
             print("{} version is invalid.".format(vcf_file_path.split('/')[-1]))
             vcf_version = -1
-            # raise InvalidVCFError(vcf_file_path, "{} invalid version.".format(vcf_file_path.split('/')[-1]))
+            # raise InvalidVCFException(vcf_file_path, "{} invalid version.".format(vcf_file_path.split('/')[-1]))
         else:
             vcf_version = tokens[1][4:7]
 
@@ -148,7 +149,7 @@ class variation_importer_utils:
         # TODO: If no contigs, use file provided by user?  Or use file and if none found, use header?
         if not vcf_contigs:
             print("No contig data in {}!".format(vcf_file_path))
-            # raise InvalidVCFError(vcf_file_path, "No contig data in VCF header!")
+            # raise InvalidVCFException(vcf_file_path, "No contig data in VCF header!")
         population_data = self._create_fake_population(vcf_genotypes)
         #TODO: If version is below 4.1, attempt to convert using VCF tools?
         #TODO: Decide which validator to use.  
