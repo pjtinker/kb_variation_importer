@@ -330,7 +330,7 @@ class variation_importer_utils:
         ws_id = '18590' # TODO: remove hard-coded test case!
         try:
             # TODO: Change this from static dir to staging area upload?
-            vcf_shock_return = self.file_to_shock({
+            vcf_shock_return = self.dfu.file_to_shock({
                                         'file_path': vcf_staging_area_path,
                                         'make_handle': 1,
                                         'pack' : 'gzip'})
@@ -363,7 +363,7 @@ class variation_importer_utils:
         print("Variation reference created: {}".format(variation_ref))
         return variation_ref
 
-    def build_invalid_vcf_report(self, workspace_name, variation_results, scratch_path):
+    def generate_invalid_vcf_html_report(self, workspace_name, variation_results, scratch_path):
         template_dir = "/kb/module/lib/kb_variation_importer/Utils/invalid_report_template.html"
         try:
             with open(template_dir, 'r') as html, open(variation_results['validation_output_path'], 'r') as variation:

@@ -18,7 +18,7 @@
             "default_values": [""],
             "field_type": "text",
             "text_options": {
-                "valid_vs_types": [ "KBaseGenomes.Genome-8.3"]
+                "valid_vs_types": [ "KBaseGenomes.Genome"]
             }
         },
         {

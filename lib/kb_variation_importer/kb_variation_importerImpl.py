@@ -108,12 +108,12 @@ class kb_variation_importer:
 
         if variation_results.get('valid_vcf') is False:
             try:
-                html_links = self.vu.build_invalid_vcf_report(import_snp_params['workspace_name'], variation_results, self.scratch_file_path)
-                report = self.vu.build_report(import_snp_params['workspace_name'], html_links)
+                html_report = self.vu.generate_invalid_vcf_html_report(import_snp_params['workspace_name'], variation_results, self.scratch_file_path)
+                report = self.vu.build_report(import_snp_params['workspace_name'], html_report)
                 return [report]
             except Exception as e:
                 print("Error generating Invalid VCF Report!")
-                raise ValueError(e)
+                raise Exception(e)
         try:
             stat_results = self.vu.generate_vcf_stats(import_snp_params['command_line_args'], vcf_staging_area_path, genome_ref)
         except Exception as e:
@@ -168,7 +168,7 @@ class kb_variation_importer:
         report_info = report.create_extended_report(reportObj)
         returnVal = { 'report_name': report_info['name'], 
                       'report_ref': report_info['ref'],
-                      'vcf_version' : vcf_version
+                      'variation_ref' : variation_ref
                      }  
         
         if not isinstance(returnVal, dict):
