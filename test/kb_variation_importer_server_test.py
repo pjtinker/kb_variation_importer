@@ -168,12 +168,13 @@ class kb_variation_importerTest(unittest.TestCase):
 
         params = {
             'workspace_name' : self.getWsName(),
+            'genome_ref' : '18590/2/8',
             'staging_file_subdir_path' : 'test_with_chr.vcf',
             'will_perform_gwas' : 0,
             'command_line_args' : None
         }
         
-        ret = self.getImpl().import_snp_data(self.getContext(), params)[0]
+        ret = self.getImpl().import_variation(self.getContext(), params)[0]
         print(ret)
         self.assertIsNotNone(ret['report_ref'], ret['report_name'])
         pass

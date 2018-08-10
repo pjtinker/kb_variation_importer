@@ -29,16 +29,16 @@ module kb_variation_importer {
         string staging_file_subdir_path;
         string command_line_args;
         boolean will_perform_gwas;
-    } import_snp_params;
+    } import_variation_params;
 
     typedef structure {
         string report_name;
         string report_ref;
         obj_ref variation_ref;
-    } snp_import_results;
+    } import_variation_results;
 
 
-    funcdef import_snp_data(import_snp_params) 
-        returns (snp_import_results) authentication required;
+    funcdef import_variation(import_variation_params) 
+        returns (import_variation_results) authentication required;
 
 };
