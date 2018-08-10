@@ -207,11 +207,12 @@ class variation_importer_utils:
             print("Error generating HTML report.")
             raise ValueError(e)
 
-        report_file_path = os.path.join(self.scratch, 'html')
-        os.mkdir(report_file_path)
-        with open(os.path.join(report_file_path, 'index.html'), 'w') as output:
+        report_dir = os.path.join(self.scratch, 'html')
+        os.mkdir(report_dir)
+        
+        report_file_path = os.path.join(report_dir, 'index.html')
+        with open(report_file_path, 'w') as output:
             output.write(report)
-
         try:
             html_upload_ret = self.dfu.file_to_shock({
                 'file_path' : report_file_path,
