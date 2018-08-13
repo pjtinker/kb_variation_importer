@@ -345,7 +345,7 @@ class variation_importer_utils:
                 'objects': [{
                     'type': 'KBaseGwasData.Variations',
                     'data': variation,
-                    'name': workspace_name
+                    'name': 'TestVariationImporterName'
                 }]
             })[0]
 
