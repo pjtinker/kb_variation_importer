@@ -368,8 +368,7 @@ class variation_importer_utils:
         report_params = {
                 'objects_created': [], # Do I put the Variation object here?
                 'message': '',
-                'direct_html': None, # Is this where to include html displayed in narrative?
-                'direct_html_index': 0,
+                'direct_html_link_index': 0,
                 'file_links': file_links,
                 'html_links': html_report,
                 'html_window_height': 220,
