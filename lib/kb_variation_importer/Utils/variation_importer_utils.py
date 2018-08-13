@@ -68,7 +68,7 @@ class variation_importer_utils:
             population['strains'].append(self._create_fake_straininfo(genome))
         return population
 
-    def create_fake_kinship_matrix(self):
+    def _create_fake_kinship_matrix(self):
         kinship = {
             'row_ids' : ['one', 'two'],
             'col_ids' : ['one', 'two'],
@@ -317,7 +317,7 @@ class variation_importer_utils:
     def _save_variation_to_ws(self, workspace_name, variation_results, vcf_staging_area_path, kinship_matrix):
         ws_id = self.dfu.ws_name_to_id(workspace_name)
         print("workspace id: {}".format(ws_id))
-        ws_id = '18590' # TODO: remove hard-coded test case!
+        # ws_id = '18590' # TODO: remove hard-coded test case!
         try:
             # TODO: Change this from static dir to staging area upload?
             vcf_shock_return = self.dfu.file_to_shock({
@@ -514,7 +514,12 @@ class variation_importer_utils:
         # stats_results = self._generate_variation_stats(params['command_line_args'], vcf_file_path)
         # validation_files.append(stats_results.get('stats_files'))
         # print("Validation files after append: {}".format(validation_files))
-
+        kinship_matrix = self._create_fake_kinship_matrix()
+        variation_obj_ref = self._save_variation_to_ws(params['workspace_name'],
+                                                        variation_results,
+                                                        vcf_file_path,
+                                                        kinship_matrix)
+        log("Variation Object ref: {}".format(variation_obj_ref))
         returnVal = self._generate_report(params, variation_results, vcf_file_path,validation_output_dir)
         
         return returnVal 
