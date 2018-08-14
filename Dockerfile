@@ -25,7 +25,8 @@ RUN wget https://github.com/EBIvariation/vcf-validator/releases/download/v0.8/vc
     && chmod 755 vcf_validator_linux \
     && mv vcf_validator_linux /kb/deployment/bin 
     
-# -----------------------------------------
+RUN sudo apt-get -y install r-cran-ggplot2
+# ---------------1--------------------------
 
 COPY ./ /kb/module
 RUN mkdir -p /kb/module/work

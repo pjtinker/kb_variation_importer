@@ -140,41 +140,14 @@ class kb_variation_importerTest(unittest.TestCase):
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
 
-        # dfu = DataFileUtil(os.environ['SDK_CALLBACK_URL'])
-        # upload_ret = dfu.file_to_shock({'file_path': '/kb/module/data/fasta_test.fa',
-        #                                 'make_handle': 1,
-        #                                 'pack' : 'zip'})
-        # mock_assembly['fasta_handle_info'] = upload_ret.get('handle')
-        # mock_assembly['fasta_handle_ref'] = upload_ret.get('handle')['hid']
-        # mock_assembly['md5'] = "13416456ac626d4bf786d713e5f9d7a1"
-        # print(json.dumps(mock_assembly, indent=2))
-        # assembly_ref = self._save_to_ws_and_report(self.getWsName(), "/kb/module/data/fasta_test.fa", mock_assembly)
-        ### The reference below is to the Arabidopsis assembly data. ###
-        # assembly_ref = "1745/266/5"
-        # ret = dfu.get_objects(
-        #     {'object_refs': [assembly_ref]}
-        # )['data'][0]['data']
-        # temp_dir = "/kb/module/work/tmp/" + str(uuid.uuid4())
-        # os.mkdir(temp_dir)
-        # out_dir = "{}/{}".format(temp_dir, "mock_assembly_output")
-        # os.mkdir(out_dir)
-
-        # with open(out_dir + '/assembly.out', 'w') as outfile:
-        #     outfile.write(json.dumps(ret, indent=2))
-        # handle = dfu.package_for_download(
-        #     {'file_path': out_dir, 'ws_refs': [assembly_ref]})
-        # output = {'shock_id': handle['shock_id']}
-        # print("Handle returned by dfu: {}".format(handle))
-
         params = {
             'workspace_name' : self.getWsName(),
             'genome_ref' : '18590/2/8',
-            'staging_file_subdir_path' : 'test_with_chr.vcf',
+            'staging_file_subdir_path' : 'test.vcf',
             'will_perform_gwas' : 0,
             'command_line_args' : None
         }
         
         ret = self.getImpl().import_variation(self.getContext(), params)[0]
-        print(ret)
         self.assertIsNotNone(ret['report_ref'], ret['report_name'])
         pass
