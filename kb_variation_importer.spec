@@ -15,11 +15,15 @@ module kb_variation_importer {
 
     /*
         required params:
-        genome_ref: KBaseGenomes.Genome-8.3 object reference
+        genome_ref: KBaseGenomes.Genome object reference
         staging_file_subdir_path: path to VCF in staging area
 
         optional params:
+        visualize_maf: generate histogram of minor allele frequencies
+        visualize_hwe: generate histogram of Hardy-Weinberg Equilibrium p-values
+        visualize_hetero: generate histogram of heterozygosity of samples.
         will_perform_gwas: groom data output for EMMAX association.
+
 
     */
     

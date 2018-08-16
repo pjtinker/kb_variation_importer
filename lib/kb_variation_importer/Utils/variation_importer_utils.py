@@ -86,6 +86,50 @@ class variation_importer_utils:
         print("Copy file path: {}".format(vcf_filepath))
         return { 'copy_file_path': vcf_filepath }
 
+    def _validate_vcf(self, vcf_filepath, vcf_version):
+        validation_output_dir = os.path.join(self.scratch, 'validation_' + str(uuid.uuid4()))
+        os.mkdir(validation_output_dir)
+
+        if vcf_version >= 4.1:
+            print("Using vcf_validator_linux...")
+            validator_cmd = ["vcf_validator_linux"] 
+            validator_cmd.append("-i")
+            validator_cmd.append(vcf_filepath)
+            validator_cmd.append("-o")            
+            validator_cmd.append(validation_output_dir)
+        else:
+            print("Using vcftools to validate...")
+            validator_cmd = ["vcf-validator"]
+            validator_cmd.append(vcf_filepath)
+            print("VCF version below 4.1.  No validation logging.")
+
+        print("Validator command: {}".format(validator_cmd))
+        p = subprocess.Popen(validator_cmd, \
+                            cwd = self.scratch, \
+                            stdout = subprocess.PIPE, \
+                            stderr = subprocess.STDOUT, \
+                            shell = False)
+        validator_output = []
+        while True:
+            line = p.stdout.readline()
+            if not line: break
+            validator_output.append(line)
+
+        p.wait()
+
+        validation_output_filename = [f for f in os.listdir(validation_output_dir) if f.endswith('.txt')][0]
+        validation_output_filepath = os.path.join(validation_output_dir, validation_output_filename)
+
+        if not validation_output_filename:
+            print('Validator did not generate log file!')
+            raise Exception("Validator did not generate a log file.")
+
+        log("Validator output filepath: {}".format(validation_output_filepath))    
+
+        log("Return code from validator {}".format(p.returncode))
+
+        return validation_output_filepath, p.returncode
+
     # Retrieve contigs from assembly file.  
     def _get_contigs_from_assembly(self, assembly_ref, type='Assembly'):
         try:
@@ -94,6 +138,7 @@ class variation_importer_utils:
             )['data'][0]['data']
         except Exception as e:
             print("Unable to retrieve Assembly reference: {}".format(assembly_ref))
+            raise ValueError(e)
         raw_contigs = assembly_data['contigs']
         contigs = {}
 
@@ -102,21 +147,30 @@ class variation_importer_utils:
             contigs[str(key)] = value['contig_id']
         return raw_contigs
         
-    def _get_contigs_genotypes_vcf(self, vcf_file_path):
+    def _get_version_contigs_genotypes(self, vcf_filepath):
         contigs = []
         genotypes = []
-        # with open(vcf_file_path) as vcf:
-        with(gzip.open if vcf_file_path.endswith('.gz') else open)(vcf_file_path, 'rt') as vcf:
+        version = ''
+        with(gzip.open if vcf_filepath.endswith('.gz') else open)(vcf_filepath, 'rt') as vcf:
+            line = vcf.readline()
+            tokens = line.split('=')
+
+            if not(tokens[0].startswith('##fileformat')):
+                log("Invalid VCF.  ##fileformat line in meta is improperly formatted.")
+                raise ValueError("Invalid VCF.  ##fileformat line in meta is improperly formatted.")
+            version = float(tokens[1][-4:].rstrip())
+            log("VCF version: {}".format(version))
             for line in vcf:
                 if line.startswith("#CHROM"):
-                    print("#CHROM encountered, exiting loop.")
+                    log("#CHROM encountered, exiting loop.")
                     genotypes = line.split()[9:]
-                    print("Number Genotypes in vcf: {}".format(len(genotypes)))
+                    log("Number Genotypes in vcf: {}".format(len(genotypes)))
                     break
                 tokens = line.split("=")
-                if tokens[0] == "##contig":
+
+                if tokens[0].startswith('##contig'):
                     contigs.append(tokens[2][:-2])
-        return contigs, genotypes
+        return version, contigs, genotypes
 
     # Arabidopsis ref: 18590/2/8
     def _get_assembly_ref_from_genome(self, genome_ref):
@@ -134,21 +188,20 @@ class variation_importer_utils:
         log('Start packing result files')
         output_files = list()
 
-        # output_directory = os.path.join(self.scratch, 'importer_output')
-        # os.mkdir(output_directory)
         result_file = os.path.join(self.scratch, 'variation_importer_results.zip')
-
-
+        excluded_extensions = ['.zip', '.vcf', '.vcf.gz', '.html', '.DS_Store']
         with zipfile.ZipFile(result_file, 'w',
                              zipfile.ZIP_DEFLATED,
                              allowZip64=True) as zip_file:
             for root, dirs, files in os.walk(self.scratch):
                 for file in files:
-                    if not (file.endswith('.zip') or
-                            file.endswith('.vcf') or
-                            file.endswith('.vcf.gz') or
-                            file.endswith('.html') or
-                            file.endswith('.DS_Store')):
+                    if not ( file.endswith(tuple(excluded_extensions))
+                            # file.endswith('.zip') or
+                            # file.endswith('.vcf') or
+                            # file.endswith('.vcf.gz') or
+                            # file.endswith('.html') or
+                            # file.endswith('.DS_Store')
+                            ):
                         zip_file.write(os.path.join(root, file), file)
 
 
@@ -161,7 +214,7 @@ class variation_importer_utils:
         return output_files
 
     def _generate_report(self, params, variation_results, \
-                         variation_file_path, validation_output_dir = None ):
+                         variation_file_path):
 
         stats_results = self._generate_variation_stats(params['command_line_args'], \
                         variation_file_path)
@@ -169,9 +222,9 @@ class variation_importer_utils:
         html_report = self._generate_html_report(variation_results, stats_results)
 
         file_links = self._generate_output_file_list()
-
+        # TODO: add objects created
         report_params = {
-                'objects_created': [], # Do I put the Variation object here?
+                'objects_created': [], 
                 'message': '',
                 'direct_html_link_index': 0,
                 'file_links': file_links,
@@ -193,6 +246,7 @@ class variation_importer_utils:
             _generate_html_report: generate html report from output files
         """
         html_report = list()
+        print("Validation output filepath passed to html report: {}".format(variation_results['validation_output_filepath']))
         try:
             report_dir = os.path.join(self.scratch, 'html')
             os.mkdir(report_dir)
@@ -228,8 +282,8 @@ class variation_importer_utils:
                         for contig in validation_content.get('contigs'):
                             icf.write(contig)
 
-                if not variation_results.get('contigs'):
-                    validation_content += '<h4>No contig information was included in the VCF file header!  Please recreate the VCF file with each contig described in the meta description </h4>'
+                # if not variation_results.get('contigs'):
+                #     validation_content += '<h4>No contig information was included in the VCF file header!  Please recreate the VCF file with each contig described in the meta description </h4>'
                 report = report.replace('Validation_Results', validation_content)
 
                 if(stats_output.get('stats_file_dir')):
@@ -267,7 +321,7 @@ class variation_importer_utils:
                 report = report.replace("Visualization_Results", image_content)
         except Exception as e:
             print("Error generating HTML report.")
-            raise ValueError(e)
+            raise 
 
         report_file_path = os.path.join(report_dir, 'index.html')
         with open(report_file_path, 'w') as output:
@@ -382,10 +436,10 @@ class variation_importer_utils:
                             stderr = subprocess.STDOUT, \
                             shell = False)
 
-        while True:
-            line = r.stdout.readline()
-            if not line: break
-            print(line)
+        # while True:
+        #     line = r.stdout.readline()
+        #     if not line: break
+        #     print(line)
 
         r.wait()
         if r.returncode != 0:
@@ -397,7 +451,7 @@ class variation_importer_utils:
                  'stats_img_dir' : image_output_directory }
 
 
-    def _save_variation_to_ws(self, workspace_name, variation_results, variation_filepath, kinship_matrix):
+    def _save_variation_to_ws(self, workspace_name, variation_obj, variation_filepath, kinship_matrix):
         ws_id = self.dfu.ws_name_to_id(workspace_name)
         print("workspace id: {}".format(ws_id))
         # ws_id = '18590' # TODO: remove hard-coded test case!
@@ -411,29 +465,20 @@ class variation_importer_utils:
             print("Error uploading file to shock!")
             raise ValueError(e)
 
-        variation = {
-            'population' : variation_results.get('population'),
-            'comment' : 'Variation comment here',
-            'assay' : 'Assay data here',
-            'originator' : 'PI / LAB',
-            'genome' : variation_results.get('genome_ref'),
-            'pubmed_id' : 'Pub Med ID',
-            'contigs' : variation_results.get('contigs'),
-            'variation_file_reference' : vcf_shock_return.get('shock_id'),
-            'kinship_info' : kinship_matrix
-        }
+        variation_obj['variation_file_reference'] = vcf_shock_return.get('shock_id')
+        
         info = self.dfu.save_objects(
             {
                 'id' : ws_id,
                 'objects': [{
                     'type': 'KBaseGwasData.Variations',
-                    'data': variation,
+                    'data': variation_obj,
                     'name': 'TestVariationImporterName'
                 }]
             })[0]
 
         variation_ref = "%s/%s/%s" % (info[6], info[0], info[4])
-        print("Variation reference created: {}".format(variation_ref))
+        log("Variation reference created: {}".format(variation_ref))
         return variation_ref
 
 
@@ -443,101 +488,31 @@ class variation_importer_utils:
         """
             :param params: dict containing all input parameters.
         """
-        returnVal = {}
 
-        variation_results = {
-            "valid_variation_file" : True,
-            "genome_ref" : params['genome_ref'],
-            "invalid_contigs" : None
-        }
+        returnVal = {}
+        valid_vcf_file = True
 
         try:
-            vcf_file_path = self.pretend_download_staging_file(
+            vcf_filepath = self.pretend_download_staging_file(
                 params['staging_file_subdir_path'], self.scratch).get('copy_file_path')
         except Exception as e:
             raise Exception("Unable to download {} from staging area.".format(params['staging_file_subdir_path']))
         
-        variation_results['variation_filename'] = os.path.basename(vcf_file_path)
         # Check file size 
-        print("{} file size: {}".format(vcf_file_path, os.path.getsize(vcf_file_path)))
-        print('\nValidating {}...'.format(vcf_file_path))
+        log("{} file size: {}".format(vcf_filepath, os.path.getsize(vcf_filepath)))
+        log('\nValidating {}...'.format(vcf_filepath))
 
-        try:
-            with (gzip.open if vcf_file_path.endswith('.gz') else open)(vcf_file_path, 'rt') as f:
-                line = f.readline()
-                tokens = line.split('=')
-        except Exception as e:
-            print("Error opening file: {}".format(e))
-            raise InvalidVCFException(vcf_file_path, e)
+        vcf_version, vcf_contigs, vcf_genotypes = self._get_version_contigs_genotypes(vcf_filepath)
 
-        # TODO: Handle the version string more thoroughly.  Make it less brittle.
-        if(tokens[0] != "##fileformat" or tokens[1][4] != '4'):
-            # TODO: Add messages based on incorrect VCF version or basic formatting error
-            # TODO: add additional validation procedures
-            print("{} version is invalid.".format(vcf_file_path.split('/')[-1]))
-            raise InvalidVCFException(vcf_file_path, "{} version is not 4.1 or higher!".format(vcf_file_path.split('/')[-1]))
-        else:
-            vcf_version = tokens[1][4:7]
-
-        variation_results["vcf_version"] = vcf_version
-
-        #TODO: If version is below 4.1, attempt to convert using VCF tools?
-        #TODO: Decide which validator to use.  
-
-        validation_output_dir = os.path.join(self.scratch, 'validation_' + str(uuid.uuid4()))
-        os.mkdir(validation_output_dir)
-
-        if float(vcf_version) >= 4.1:
-            print("Using vcf_validator_linux...")
-            validator_cmd = ["vcf_validator_linux"] 
-            validator_cmd.append("-i")
-            validator_cmd.append(vcf_file_path)
-            validator_cmd.append("-o")            
-            validator_cmd.append(validation_output_dir)
-        else:
-            print("Using vcftools to validate...")
-            validator_cmd = ["vcf-validator"]
-            validator_cmd.append(vcf_file_path)
-            print("VCF version below 4.1.  No validation logging.")
-
-        print("Validator command: {}".format(validator_cmd))
-        p = subprocess.Popen(validator_cmd, \
-                            cwd = self.scratch, \
-                            stdout = subprocess.PIPE, \
-                            stderr = subprocess.STDOUT, \
-                            shell = False)
-        validator_output = []
-        while True:
-            line = p.stdout.readline()
-            if not line: break
-            validator_output.append(line)
-
-        p.wait()
-
-        validation_output_filename = [f for f in os.listdir(validation_output_dir) if f.endswith('.txt')][0]
-        validation_output_filepath = os.path.join(validation_output_dir, validation_output_filename)
-        variation_results['validation_output_filepath'] = validation_output_filepath
-
-        if not validation_output_filename:
-            print('Validator did not generate log file!')
-            raise Exception("Validator did not generate a log file.")
-
-        print("Validator output filepath: {}".format(validation_output_filepath))    
-
-        print("Return code from Popen {}".format(p.returncode))
-        if p.returncode != 0:
-            variation_results['valid_variation_file'] = False
-            returnVal = self._generate_report(params['workspace_name'], variation_results, vcf_file_path)
-            return returnVal
-
-        vcf_contigs, vcf_genotypes = self._get_contigs_genotypes_vcf(vcf_file_path)
-        # TODO: If no contigs, use file provided by user?  Or use file and if none found, use header?
         if not vcf_contigs:
-            print("No contig data in {}!".format(vcf_file_path))
-            variation_results['valid_variation_file'] = False        
+            log("No contig data in {} header.".format(vcf_filepath))        
+            raise ValueError("No contig data in {} header.".format(vcf_filepath))
 
-        variation_results['contigs'] = vcf_contigs
-        variation_results['num_genotypes'] = len(vcf_genotypes)
+        if (vcf_version < 4.1):
+            log("VCF file is version {}.  Must be at least version 4.1".format(vcf_version))
+            raise ValueError("VCF file is version {}.  Must be at least version 4.1".format(vcf_version))
+
+        # TODO: which first, validation or check contigs?
 
         # Retrieve Assembly object reference associated with genome.  
         try:
@@ -558,20 +533,47 @@ class variation_importer_utils:
         for contig in vcf_contigs:
             if contig not in assembly_contigs.keys():
                 invalid_contigs.append(contig)
-        
+
         if invalid_contigs:
-            print("Invalid contig IDs found in {}".format(vcf_file_path))
-            variation_results['invalid_contigs'] = invalid_contigs
-            variation_results['valid_variation_file'] = False
+            print("Invalid contig IDs found in {}".format(vcf_filepath))
+            valid_vcf_file = False
 
-        variation_results['population'] = self._create_fake_population(vcf_genotypes)
+        validation_output_filepath, returncode = self._validate_vcf(vcf_filepath, vcf_version)
 
+        if returncode != 0:
+            valid_vcf_file = False
+
+        population = self._create_fake_population(vcf_genotypes)
         kinship_matrix = self._create_fake_kinship_matrix()
-        variation_obj_ref = self._save_variation_to_ws(params['workspace_name'],
-                                                        variation_results,
-                                                        vcf_file_path,
+
+        variation_obj_ref = None
+        if valid_vcf_file:
+            variation_object = {
+                "genome"        : params['genome_ref'],
+                "population"    : population,
+                "contigs"       : vcf_contigs,
+                "comment"       : "Comments go here",
+                "assay"         : "Assay data goes gere.",
+                "originator"    : "PI/Lab info goes here",
+                "pubmed_id"     : "PubMed ID goes here",
+                "kinship_info"  : kinship_matrix
+            }
+        
+            variation_obj_ref = self._save_variation_to_ws(params['workspace_name'],
+                                                        variation_object,
+                                                        vcf_filepath,
                                                         kinship_matrix)
-        log("Variation Object ref: {}".format(variation_obj_ref))
-        returnVal = self._generate_report(params, variation_results, vcf_file_path, validation_output_dir)
+        variation_report_metadata = {
+            'valid_variation_file'          : valid_vcf_file,
+            'variation_obj_ref'             : variation_obj_ref,
+            'variation_filename'            : os.path.basename(vcf_filepath),
+            'validation_output_filepath'    : validation_output_filepath,
+            'vcf_version'                   : vcf_version,
+            'num_genotypes'                 : len(vcf_genotypes),
+            'num_contigs'                   : len(vcf_contigs),
+            'invalid_contigs'               : invalid_contigs
+        }
+
+        returnVal = self._generate_report(params, variation_report_metadata, vcf_filepath)
         
         return returnVal 

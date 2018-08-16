@@ -1,0 +1,200 @@
+id	latitude	longitude	nativename(s)	region	country	comment
+7000	50.9167	9.57073	Aa-0	Western Europe	GER	NA
+6897	45.0	1.3	Ag-0	Western Europe	FRA	NA
+6988	40.31	-3.22	Alc-0	Southern Europe	ESP	NA
+8230	56.68	16.5	Algutsrum	S Sweden	SWE	NA
+6898	51.2167	4.4	An-1	Western Europe	BEL	NA
+8254	50.3	5.3	Ang-0	Western Europe	BEL	NA
+7014	56.5459	-4.79821	Ba-1	Northern Europe	UK	NA
+8256	56.4	12.9	Bå1-2	S Sweden	SWE	NA
+8258	56.4	12.9	Bå4-1	S Sweden	SWE	NA
+8259	56.4	12.9	Bå5-1	S Sweden	SWE	NA
+6899	49.0	11.0	Bay-0	Western Europe	GER	NA
+6709	47.6479	-122.305	Bg-2	Pacific Northwest	USA	NA
+6900	63.324	18.484	Bil-5	N Sweden	SWE	NA
+6901	63.324	18.484	Bil-7	N Sweden	SWE	NA
+8264	41.6833	2.8	Bla-1	Southern Europe	ESP	NA
+8265	48.0	19.0	Blh-1	Eastern Europe	CZE	NA
+8266	55.86	13.51	Boo2-1	S Sweden	SWE	NA
+5837	49.4013	16.2326	Bor-1	Moravia	CZE	NA
+6903	49.4013	16.2326	Bor-4	Moravia	CZE	NA
+6904	49.2	16.6166	Br-0	Moravia	CZE	NA
+8231	56.3	16.0	Brö1-6	S Sweden	SWE	NA
+8270	47.5	7.5	Bs-1	Western Europe	SUI	NA
+8271	50.5	9.5	Bu-0	Western Europe	GER	NA
+7033	41.3599	-122.755	Buckhorn Pass	Northern California	USA	NA
+6905	54.1	-6.2	Bur-0	Northern Europe	IRL	NA
+6906	40.2077	-8.42639	C24	Southern Europe	POR	NA
+7062	50.2981	8.26607	Ca-0	Western Europe	GER	NA
+8274	29.2144	-13.4811	Can-0	Southern Europe	ESP	NA
+8275	49.0	0.5	Cen-0	Western Europe	FRA	NA
+6907	51.4083	-0.6383	CIBC-17	Northern Europe	UK	NA
+6908	51.4083	-0.6383	CIBC-5	Northern Europe	UK	NA
+7064	51.3	1.1	Cnt-1	England	UK	NA
+7081	40.2077	-8.42639	Co	Southern Europe	POR	NA
+6909	38.3	-92.3	Col-0	Midwest	USA	NA
+6910	37.3	15.0	Ct-1	Southern Europe	ITA	NA
+6911	15.1111	-23.6167	Cvi-0	Macaronesia	CPV	NA
+7460			Da(1)-12	Eastern Europe	CZE	NA
+7094	49.8724	8.65081	Da-0	Western Europe	GER	NA
+8233	41.1876	-87.1923	Dem-4	Midwest	USA	NA
+8283	55.76	14.12	Dra3-1	S Sweden	SWE	NA
+8284	49.4112	16.2815	DraII-1	Moravia	CZE	NA
+8285	49.4112	16.2815	DraIII-1	Moravia	CZE	NA
+6008	49.1	16.2	Duk	Moravia	CZE	NA
+6009	62.877	18.177	Eden-1	N Sweden	SWE	NA
+6913	62.877	18.177	Eden-2	N Sweden	SWE	NA
+6914	55.949444	-3.160278	Edi-0	Northern Europe	UK	NA
+6016	62.9	18.4	Eds-1	N Sweden	SWE	NA
+6915	50.3	6.3	Ei-2	Western Europe	GER	NA
+8290	50.0	8.5	En-1	Western Europe	GER	NA
+7123	50.1721	8.38912	Ep-0	Taunus Mountains	GER	NA
+6916	58.3	25.3	Est-1		RUS	NA
+6917	63.0165	18.3174	Fäb-2	N Sweden	SWE	NA
+6918	63.0165	18.3174	Fäb-4	N Sweden	SWE	NA
+8215	40.5	-8.32	Fei-0	Southern Europe	POR	NA
+8422	56.06	14.29	Fjä1-1	S Sweden	SWE	NA
+6919	50.3	8.0	Ga-0	Western Europe	GER	NA
+8296	53.5	10.5	Gd-1	Western Europe	GER	NA
+8297	46.5	6.08	Ge-0	Western Europe	SUI	NA
+7147	50.584	8.67825	Gie-0	Western Europe	GER	NA
+6920	51.5338	9.9355	Got-22	Western Europe	GER	NA
+6921	51.5338	9.9355	Got-7	Western Europe	GER	NA
+8300	47.0	15.5	Gr-1		AUT	NA
+6922	50.3	8.0	Gu-0	Western Europe	GER	NA
+8214	49.0	2.0	Gy-0	Western Europe	FRA	NA
+7461	49.0	15.0	H55		CZE	NA
+7163	52.3721	9.73569	Ha-0	Western Europe	GER	NA
+8235	48.8	17.1	Hod	Moravia	CZE	NA
+8423	56.1	13.74	Hov2-1	S Sweden	SWE	NA
+8306	56.1	13.74	Hov4-1	S Sweden	SWE	NA
+6923	51.4083	-0.6383	HR-10	Northern Europe	UK	NA
+6924	51.4083	-0.6383	HR-5	Northern Europe	UK	NA
+8310	52.24	9.44	Hs-0	Western Europe	GER	NA
+8236	49.33	15.76	HSm	Moravia	CZE	NA
+8311	47.5	11.5	In-0	Western Europe	AUT	NA
+8312	50.5	7.5	Is-0	Western Europe	GER	NA
+7424	49.2	16.6166	Jl-3	Moravia	CZE	NA
+8313	49.0	15.0	Jm-0	Eastern Europe	CZE	NA
+8314	47.0	14.0	Ka-0	Western Europe	AUT	NA
+8424	35.0	77.0	Kas-2	South Asia	IND	NA
+8237	55.8	13.1	Kävlinge-1	S Sweden	SWE	NA
+8420	50.0667	8.5333	Kelsterbach-4	Western Europe	GER	NA
+6926	44.46	-85.37	Kin-0	Midwest	USA	NA
+6040	55.66	13.4	Kni-1	S Sweden	SWE	NA
+6927	41.2816	-86.621	Kno-10	Midwest	USA	NA
+6928	41.2816	-86.621	Kno-18	Midwest	USA	NA
+8239	51.0	7.0	Köln		GER	NA
+6929	38.48	68.49	Kondara	Central Asia	TJK	NA
+8240	55.705	13.196	Kulturen-1	S Sweden	SWE	NA
+6930	49.5	73.1	Kz-1	Central Asia	KAZ	NA
+6931	49.5	73.1	Kz-9	Central Asia	KAZ	NA
+8323	57.0	-4.0	Lc-0		UK	NA
+6932	47.984	10.8719	Ler-1	Western Europe	GER	NA
+7231	50.3833	8.0666	Li-7		GER	NA
+8241	55.9473	13.821	Liarum	S Sweden	SWE	NA
+8242	56.1494	15.7884	Lillö-1	S Sweden	SWE	NA
+8325	50.0	19.3	Lip-0		POL	NA
+8326	56.0328	14.775	Lis-1	S Sweden	SWE	NA
+8222	56.0328	14.775	Lis-2	S Sweden	SWE	NA
+8430	52.25	4.5667	Lisse		NED	NA
+6933	41.59	2.49	LL-0	Southern Europe	ESP	NA
+8329	48.0	0.5	Lm-2	Western Europe	FRA	NA
+6042	56.09	13.9	Lom1-1	S Sweden	SWE	NA
+6043	62.801	18.079	Löv-1	N Sweden	SWE	NA
+6046	62.801	18.079	Löv-5	N Sweden	SWE	NA
+7520	49.38	16.81	Lp2-2	Moravia	CZE	NA
+7521	49.38	16.81	Lp2-6	Moravia	CZE	NA
+8334	55.71	13.2	Lu-1	S Sweden	SWE	NA
+8335	55.71	13.2	Lund	S Sweden	SWE	NA
+6936	46.0	3.3	Lz-0	Western Europe	FRA	NA
+7255	50.95	7.5	Mh-0	Eastern Europe	POL	NA
+8337	44.0	12.37	Mir-0		ITA	NA
+7522	44.15	9.65	Mr-0	Southern Europe	ITA	NA
+6937	49.0	9.3	Mrk-0	Western Europe	GER	NA
+6939	32.34	22.46	Mt-0	Cyrenaica (also Kyrenaika)	LIB	NA
+6940	50.3	8.3	Mz-0	Western Europe	GER	NA
+7438	61.36	34.15	N13		RUS	NA
+8343	47.5	1.5	Na-1	Western Europe	FRA	NA
+6942	50.0	10.0	Nd-1		SUI	NA
+6943	51.4083	-0.6383	NFA-10	Northern Europe	UK	NA
+6944	51.4083	-0.6383	NFA-8	Northern Europe	UK	NA
+7275	51.0581	13.2995	No-0	Western Europe	GER	NA
+6945	52.24	4.45	Nok-3		NED	NA
+6064	62.9513	18.2763	Nyl-2	N Sweden	SWE	NA
+7518	56.1509	15.7735	ÖMö2-1	S Sweden	SWE	NA
+7519	56.1509	15.7735	ÖMö2-3	S Sweden	SWE	NA
+7282	50.3827	8.01161	Or-0	Western Europe	GER	NA
+6074	56.4573	16.1408	Ör-1	S Sweden	SWE	NA
+8351	60.25	18.37	Ost-0	C Sweden	SWE	NA
+6946	60.23	6.13	Oy-0	Northern Europe	NOR	NA
+8353	38.07	13.22	Pa-1	Sicily	ITA	NA
+8354	58.0	56.3167	Per-1		RUS	NA
+7296	59.0	29.0	Petergof	Eastern Europe	RUS	NA
+8243	43.7703	11.2547	PHW-2		ITA	NA
+8357	41.5	2.25	Pla-0	Southern Europe	ESP	NA
+7526	42.0945	-86.3253	Pna-10	Midwest	USA	NA
+7523	42.0945	-86.3253	Pna-17	Midwest	USA	NA
+7306	49.2655	-123.206	Pog-0	Pacific Northwest	CAN	NA
+8213	43.25	-6.0	Pro-0	Southern Europe	ESP	NA
+6951	49.42	16.36	Pu2-23	Eastern Europe	CZE	NA
+6956	49.42	16.36	Pu2-7	Eastern Europe	CZE	NA
+6957	49.42	16.36	Pu2-8	Eastern Europe	CZE	NA
+6958	46.0	3.3	Ra-0	Western Europe	FRA	NA
+8365	49.0	16.0	Rak-2		CZE	NA
+8411	50.5	8.5	Rd-0		GER	NA
+8366	50.5	8.5	Rd-0		GER	NA
+6959	48.5	-1.41	Ren-1	Western Europe	FRA	NA
+6960	48.5	-1.41	Ren-11	Western Europe	FRA	NA
+8369	55.6942	13.4504	Rev-1	S Sweden	SWE	NA
+7524	42.036	-86.511	Rmx-A02	Midwest	USA	NA
+7525	42.036	-86.511	Rmx-A180	Midwest	USA	NA
+7515	41.5609	-86.4251	RRS-10	Midwest	USA	NA
+7514	41.5609	-86.4251	RRS-7	Midwest	USA	NA
+8374	56.3	34.0	Rsch-4		RUS	NA
+7323	49.0	38.28	Rubezhnoe-1		UKR	NA
+8247	56.07	13.74	San-2	S Sweden	SWE	NA
+8376	62.69	18.0	Sanna-2	N Sweden	SWE	NA
+8378	49.49	14.24	Sap-0	Eastern Europe	CZE	NA
+8412	49.1833	15.8833	Sav-0		CZE	NA
+6961	38.3333	-3.53333	Se-0	Southern Europe	ESP	NA
+8245	47.0	-122.2	Seattle-0	Pacific Northwest	USA	NA
+6962	38.35	68.48	Shahdara	Central Asia	TJK	NA
+6963	38.35	68.48	Sorbo	Central Asia	TJK	NA
+6964	56.3	16.0	Spr1-2	C Sweden	SWE	NA
+6965	58.4173	14.1576	Spr1-6	C Sweden	SWE	NA
+6966	51.4083	-0.6383	Sq-1	Northern Europe	UK	NA
+6967	51.4083	-0.6383	Sq-8	Northern Europe	UK	NA
+8387	59.0	18.0	St-0	C Sweden	SWE	NA
+7346	52.6058	11.8558	Ste-0	Western Europe	GER	NA
+8388	52.0	36.0	Stw-0	Eastern Europe	RUS	NA
+8389	49.5	14.5	Ta-0	Eastern Europe	CZE	NA
+6968	60.0	23.5	Tamm-2	Northern Europe	FIN	NA
+6969	60.0	23.5	Tamm-27	Northern Europe	FIN	NA
+6243	55.95	13.85	Tottarp-2	S Sweden	SWE	NA
+6970	41.7194	2.93056	Ts-1	Southern Europe	ESP	NA
+6971	41.7194	2.93056	Ts-5	Southern Europe	ESP	NA
+6972	34.43	136.31	Tsu-1	Eastern Asia	JPN	NA
+8395	45.0	7.5	Tu-0		ITA	NA
+8426	56.06	13.97	Ull1-1	S Sweden	SWE	NA
+6973	56.0648	13.9707	Ull2-3	S Sweden	SWE	NA
+6974	56.0648	13.9707	Ull2-5	S Sweden	SWE	NA
+6975	48.3	14.45	Uod-1	Western Europe	AUT	NA
+6976	48.3	14.45	Uod-7	Western Europe	AUT	NA
+6977	49.3	-123.0	Van-0	Pacific Northwest	CAN	NA
+7516	55.58	14.334	Vår2-1	S Sweden	SWE	NA
+7517	55.58	14.334	Vår2-6	S Sweden	SWE	NA
+9058	57.75	16.6333	Västervik		SWE	NA
+8249	57.7	15.8	Vimmerby	S Sweden	SWE	NA
+9057	56.1	13.9167	Vinslöv	S Sweden	SWE	NA
+6978	52.3	21.0	Wa-1	Eastern Europe	POL	NA
+7477	41.7302	-71.2825	WAR		USA	NA
+6979	47.25	8.26	Wei-0	Western Europe	SUI	NA
+100000			Wil-1-Dean-Lab		LTU	NA
+6980	52.3	30.0	Ws-0	Eastern Europe	RUS	NA
+6981	52.3	30.0	Ws-2	Eastern Europe	RUS	NA
+6982	52.3	9.3	Wt-5	Western Europe	GER	NA
+6983	37.45	-119.35	Yo-0	Northern California	USA	NA
+6984	49.3853	16.2544	Zdr-1	Moravia	CZE	NA
+6985	49.3853	16.2544	Zdr-6	Moravia	CZE	NA
+7418	47.3667	8.55	Zu-1	Western Europe	SUI	NA
