@@ -26,6 +26,8 @@ RUN wget https://github.com/EBIvariation/vcf-validator/releases/download/v0.8/vc
     && mv vcf_validator_linux /kb/deployment/bin 
     
 RUN sudo apt-get -y install r-cran-ggplot2
+
+RUN pip install pandas
 # ---------------1--------------------------
 
 COPY ./ /kb/module

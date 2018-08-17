@@ -32,10 +32,9 @@ id	latitude	longitude	nativename(s)	region	country	comment
 6908	51.4083	-0.6383	CIBC-5	Northern Europe	UK	NA
 7064	51.3	1.1	Cnt-1	England	UK	NA
 7081	40.2077	-8.42639	Co	Southern Europe	POR	NA
-6909	38.3	-92.3	Col-0	Midwest	USA	NA
 6910	37.3	15.0	Ct-1	Southern Europe	ITA	NA
 6911	15.1111	-23.6167	Cvi-0	Macaronesia	CPV	NA
-7460			Da(1)-12	Eastern Europe	CZE	NA
+7460	23.33	-23.33	Da(1)-12	Eastern Europe	CZE	NA
 7094	49.8724	8.65081	Da-0	Western Europe	GER	NA
 8233	41.1876	-87.1923	Dem-4	Midwest	USA	NA
 8283	55.76	14.12	Dra3-1	S Sweden	SWE	NA
@@ -181,7 +180,6 @@ id	latitude	longitude	nativename(s)	region	country	comment
 6974	56.0648	13.9707	Ull2-5	S Sweden	SWE	NA
 6975	48.3	14.45	Uod-1	Western Europe	AUT	NA
 6976	48.3	14.45	Uod-7	Western Europe	AUT	NA
-6977	49.3	-123.0	Van-0	Pacific Northwest	CAN	NA
 7516	55.58	14.334	Vår2-1	S Sweden	SWE	NA
 7517	55.58	14.334	Vår2-6	S Sweden	SWE	NA
 9058	57.75	16.6333	Västervik		SWE	NA
@@ -190,7 +188,7 @@ id	latitude	longitude	nativename(s)	region	country	comment
 6978	52.3	21.0	Wa-1	Eastern Europe	POL	NA
 7477	41.7302	-71.2825	WAR		USA	NA
 6979	47.25	8.26	Wei-0	Western Europe	SUI	NA
-100000			Wil-1-Dean-Lab		LTU	NA
+100000	45.7	9.99	Wil-1-Dean-Lab		LTU	NA
 6980	52.3	30.0	Ws-0	Eastern Europe	RUS	NA
 6981	52.3	30.0	Ws-2	Eastern Europe	RUS	NA
 6982	52.3	9.3	Wt-5	Western Europe	GER	NA

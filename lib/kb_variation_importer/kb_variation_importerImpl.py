@@ -94,14 +94,10 @@ class kb_variation_importer:
         
         # print("Scratch file path produced by DFU: {}".format(vcf_staging_area_path))
 
-        # TODO: Get genome reference.  How?
-        # genome_ref='18590/2/8'
-
         try:
             returnVal = self.vu.validate_vcf(import_variation_params)
         except Exception as e:
             print("Error importing variation data!")
-            print(e)
             raise ValueError(e)
         
         #END import_variation

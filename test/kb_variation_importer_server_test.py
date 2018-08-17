@@ -144,6 +144,7 @@ class kb_variation_importerTest(unittest.TestCase):
             'workspace_name' : self.getWsName(),
             'genome_ref' : '18590/2/8',
             'staging_file_subdir_path' : 'test_with_chr.vcf',
+            'location_file_subdir_path' : 'population_locality.txt',
             'will_perform_gwas' : 0,
             'command_line_args' : None
         }

@@ -23,7 +23,7 @@
         },
         {
             "id": "staging_file_subdir_path",
-            "optional": true,
+            "optional": false,
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "" ],
@@ -32,6 +32,17 @@
                 "valid_ws_types": [ ]
             }
         },
+        {
+            "id": "location_file_subdir_path",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ ]
+            }
+        },        
         {
             "id": "will_perform_gwas",
             "optional": true,
@@ -74,6 +85,10 @@
                 {
                     "input_parameter": "staging_file_subdir_path",
                     "target_property": "staging_file_subdir_path"
+                },
+                {
+                    "input_parameter": "location_file_subdir_path",
+                    "target_property": "location_file_subdir_path"
                 },
                 {
                     "input_parameter": "command_line_args",

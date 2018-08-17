@@ -39,8 +39,11 @@ parameters :
             Input file path
         short-hint : |
             The path of your SNP input file.
-        long-hint  : |
-            The path of your SNP input file
+    location_file_subdir_path :
+        ui-name : |
+            Input file path
+        short-hint : |
+            The path of your SNP input file.
     will_perform_gwas :
         ui-name : |
             GWAS analysis intended
