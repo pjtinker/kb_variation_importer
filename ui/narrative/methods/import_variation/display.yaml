@@ -41,9 +41,9 @@ parameters :
             The path of your SNP input file.
     location_file_subdir_path :
         ui-name : |
-            Input file path
+            Location file path
         short-hint : |
-            The path of your SNP input file.
+            The path of your location data.
     will_perform_gwas :
         ui-name : |
             GWAS analysis intended
