@@ -16,12 +16,11 @@ module kb_variation_importer {
     /*
         required params:
         genome_ref: KBaseGenomes.Genome object reference
-        staging_file_subdir_path: path to VCF in staging area
-        location_file_subdir_path: path to location file in staging area.
+        variation_file_subdir_path: path to VCF in staging area
+        variation_attributes_subdir_path: path to location file in staging area.
+        variation_object_name: name of created Variation Object
 
         optional params:
-
-
         *** Filtering ***
         maf_threshold: percent threshold for filtering by maf
         geno_missingness: percent threshold to exclude SNPs based on missing calls
@@ -32,7 +31,6 @@ module kb_variation_importer {
         plot_maf: generate histogram of minor allele frequencies
         plot_hwe: generate histogram of Hardy-Weinberg Equilibrium p-values
 
-        will_perform_gwas: groom data output for EMMAX association.
 
 
     */
@@ -40,10 +38,9 @@ module kb_variation_importer {
     typedef structure {
         string workspace_name;
         obj_ref genome_ref;
-        string staging_file_subdir_path;
-        string location_file_subdir_path;
-        string command_line_args;
-        boolean will_perform_gwas;
+        string variation_file_subdir_path;
+        string variation_attributes_subdir_path;
+        string variation_object_name;
     } import_variation_params;
 
     typedef structure {
@@ -55,5 +52,4 @@ module kb_variation_importer {
 
     funcdef import_variation(import_variation_params) 
         returns (import_variation_results) authentication required;
-
 };

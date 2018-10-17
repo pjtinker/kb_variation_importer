@@ -660,12 +660,12 @@ class DataFileUtil(object):
         Download a staging area file to scratch area
         :param params: instance of type "DownloadStagingFileParams" (Input
            parameters for the "download_staging_file" function. Required
-           parameters: staging_file_subdir_path: subdirectory file path e.g.
-           for file: /data/bulk/user_name/file_name staging_file_subdir_path
+           parameters: variation_file_subdir_path: subdirectory file path e.g.
+           for file: /data/bulk/user_name/file_name variation_file_subdir_path
            is file_name for file:
            /data/bulk/user_name/subdir_1/subdir_2/file_name
-           staging_file_subdir_path is subdir_1/subdir_2/file_name) ->
-           structure: parameter "staging_file_subdir_path" of String
+           variation_file_subdir_path is subdir_1/subdir_2/file_name) ->
+           structure: parameter "variation_file_subdir_path" of String
         :returns: instance of type "DownloadStagingFileOutput" (Results from
            the download_staging_file function. copy_file_path: copied file
            scratch area path) -> structure: parameter "copy_file_path" of

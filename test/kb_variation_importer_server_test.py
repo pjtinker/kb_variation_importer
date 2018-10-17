@@ -104,28 +104,27 @@ class kb_variation_importerTest(unittest.TestCase):
     @staticmethod
     def fake_staging_download(params):
         scratch = '/kb/module/work/tmp/'
-        inpath = params['staging_file_subdir_path']
+        inpath = params['variation_file_subdir_path']
         shutil.copy('/kb/module/data/'+inpath, scratch+inpath)
         return {'copy_file_path': scratch+inpath}
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
     @patch.object(DataFileUtil, "download_staging_file",
                   new=fake_staging_download)
 
-    def _save_to_ws_and_report(self, ws_id, source, assembly_data):
-        dfu = DataFileUtil(os.environ['SDK_CALLBACK_URL'])
-        workspace_id = dfu.ws_name_to_id(self.getWsName())
-        print("Workspace id: {}".format(workspace_id))
-        info = dfu.save_objects(
-            {
-                'id': '18590', # Numerical id of workspace
-                "objects": [{
-                    "type": "KBaseGenomeAnnotations.Assembly-3.0",
-                    "data": assembly_data,
-                    "name": ws_id
-                }]
-            })[0]
-        #print("Data from save to ws: {}".format(json.dumps(info, indent=2)))
-        assembly_ref = "%s/%s/%s" % (info[6], info[0], info[4])
+    # def _save_to_ws_and_report(self, ws_id, source, assembly_data):
+    #     dfu = DataFileUtil(os.environ['SDK_CALLBACK_URL'])
+    #     workspace_id = dfu.ws_name_to_id(self.getWsName())
+    #     print("Workspace id: {}".format(workspace_id))
+    #     info = dfu.save_objects(
+    #         {
+    #             'id': '18590', 
+    #             "objects": [{
+    #                 "type": "KBaseGenomeAnnotations.Assembly-3.0",
+    #                 "data": assembly_data,
+    #                 "name": ws_id
+    #             }]
+    #         })[0]
+    #     assembly_ref = "%s/%s/%s" % (info[6], info[0], info[4])
 
         return assembly_ref
         
@@ -142,9 +141,10 @@ class kb_variation_importerTest(unittest.TestCase):
 
         params = {
             'workspace_name' : self.getWsName(),
+            'variation_object_name' : 'Test_variation_object_name',
             'genome_ref' : '18590/2/8',
-            'staging_file_subdir_path' : 'test_with_chr.vcf',
-            'location_file_subdir_path' : 'population_locality.txt',
+            'variation_file_subdir_path' : 'test_with_chr.vcf',
+            'variation_attributes_subdir_path' : 'population_locality.txt',
             'will_perform_gwas' : 0,
             'command_line_args' : None
         }

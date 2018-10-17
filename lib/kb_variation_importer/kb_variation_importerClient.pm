@@ -123,7 +123,7 @@ $import_snp_params is a kb_variation_importer.import_snp_params
 $return is a kb_variation_importer.snp_import_results
 import_snp_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
-	staging_file_subdir_path has a value which is a string
+	variation_file_subdir_path has a value which is a string
 	will_perform_gwas has a value which is an int
 snp_import_results is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
@@ -140,7 +140,7 @@ $import_snp_params is a kb_variation_importer.import_snp_params
 $return is a kb_variation_importer.snp_import_results
 import_snp_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
-	staging_file_subdir_path has a value which is a string
+	variation_file_subdir_path has a value which is a string
 	will_perform_gwas has a value which is an int
 snp_import_results is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
@@ -311,7 +311,7 @@ Insert your typespec information here.
 <pre>
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
-staging_file_subdir_path has a value which is a string
+variation_file_subdir_path has a value which is a string
 will_perform_gwas has a value which is an int
 
 </pre>
@@ -322,7 +322,7 @@ will_perform_gwas has a value which is an int
 
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
-staging_file_subdir_path has a value which is a string
+variation_file_subdir_path has a value which is a string
 will_perform_gwas has a value which is an int
 
 

@@ -22,14 +22,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "workspace_name",
-    "staging_file_subdir_path",
+    "variation_file_subdir_path",
     "will_perform_gwas"
 })
 public class ImportSnpParams {
 
     @JsonProperty("workspace_name")
     private String workspaceName;
-    @JsonProperty("staging_file_subdir_path")
+    @JsonProperty("variation_file_subdir_path")
     private String stagingFileSubdirPath;
     @JsonProperty("will_perform_gwas")
     private Long willPerformGwas;
@@ -50,12 +50,12 @@ public class ImportSnpParams {
         return this;
     }
 
-    @JsonProperty("staging_file_subdir_path")
+    @JsonProperty("variation_file_subdir_path")
     public String getStagingFileSubdirPath() {
         return stagingFileSubdirPath;
     }
 
-    @JsonProperty("staging_file_subdir_path")
+    @JsonProperty("variation_file_subdir_path")
     public void setStagingFileSubdirPath(String stagingFileSubdirPath) {
         this.stagingFileSubdirPath = stagingFileSubdirPath;
     }

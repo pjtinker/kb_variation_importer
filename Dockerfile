@@ -8,20 +8,18 @@ MAINTAINER KBase Developer
 
 # RUN apt-get update
 
-RUN curl -O https://www.cog-genomics.org/static/bin/plink180807/plink_linux_x86_64.zip \
+RUN curl -O https://www.cog-genomics.org/static/bin/plink181012/plink_linux_x86_64.zip \
     && unzip plink_linux_x86_64.zip \
     && mv plink /kb/deployment/bin 
 
-RUN wget https://github.com/vcftools/vcftools/tarball/master/vcftools-vcftools-v0.1.15-8-g7ae0d4c.tar.gz \
-    && mkdir vcftools \
-    && tar -xvzf vcftools-vcftools-v0.1.15-8-g7ae0d4c.tar.gz -C ./vcftools --strip-components=1 \
+RUN git clone https://github.com/vcftools/vcftools.git \
     && cd vcftools \
     && ./autogen.sh \
     && ./configure \
     && make \
     && make install
 
-RUN wget https://github.com/EBIvariation/vcf-validator/releases/download/v0.8/vcf_validator_linux \
+RUN wget https://github.com/EBIvariation/vcf-validator/releases/download/v0.9.1/vcf_validator_linux \
     && chmod 755 vcf_validator_linux \
     && mv vcf_validator_linux /kb/deployment/bin 
     

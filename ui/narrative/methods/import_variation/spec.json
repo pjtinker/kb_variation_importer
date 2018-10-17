@@ -22,7 +22,7 @@
             }
         },
         {
-            "id": "staging_file_subdir_path",
+            "id": "variation_file_subdir_path",
             "optional": false,
             "advanced": false,
             "allow_multiple": false,
@@ -33,7 +33,7 @@
             }
         },
         {
-            "id": "location_file_subdir_path",
+            "id": "variation_attributes_subdir_path",
             "optional": true,
             "advanced": false,
             "allow_multiple": false,
@@ -44,26 +44,14 @@
             }
         },        
         {
-            "id": "will_perform_gwas",
-            "optional": true,
+            "id": "variation_object_name",
+            "optional": false,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [""],
-            "field_type": "checkbox",
-            "checkbox_options": {
-                "checked_value": 1,
-                "unchecked_value": 0
-            }
-        },
-        {
-            "id":"command_line_args",
-            "optional": true,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [""],
-            "field_type": "textarea",
-            "textarea_options": {
-                "n_rows": 5
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ ]
             }            
         }
     ],
@@ -83,21 +71,18 @@
                     "target_type_transform": "resolved-ref"
                 },
                 {
-                    "input_parameter": "staging_file_subdir_path",
-                    "target_property": "staging_file_subdir_path"
+                    "input_parameter": "variation_file_subdir_path",
+                    "target_property": "variation_file_subdir_path"
                 },
                 {
-                    "input_parameter": "location_file_subdir_path",
-                    "target_property": "location_file_subdir_path"
+                    "input_parameter": "variation_attributes_subdir_path",
+                    "target_property": "variation_attributes_subdir_path"
                 },
                 {
-                    "input_parameter": "command_line_args",
-                    "target_property": "command_line_args"
-                },
-                {
-                    "input_parameter": "will_perform_gwas",
-                    "target_property": "will_perform_gwas"
+                    "input_parameter": "variation_object_name",
+                    "target_property": "variation_object_name"
                 }
+
             ],
             "output_mapping": [
                 {

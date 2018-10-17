@@ -65,7 +65,7 @@ class kb_variation_importer:
         """
         :param import_variation_params: instance of type "import_variation_params"
            (Insert your typespec information here.) -> structure: parameter
-           "workspace_name" of String, parameter "staging_file_subdir_path"
+           "workspace_name" of String, parameter "variation_file_subdir_path"
            of String, parameter "will_perform_gwas" of Long
         :returns: instance of type "snp_import_results" -> structure:
            parameter "report_name" of String, parameter "report_ref" of
@@ -87,10 +87,10 @@ class kb_variation_importer:
 
         # This is the process if staging file rights have been granted
         # vcf_staging_area_path = self.dfu.download_staging_file(
-        #     {'staging_file_subdir_path': import_variation_params['staging_file_subdir_path']
+        #     {'variation_file_subdir_path': import_variation_params['variation_file_subdir_path']
         # }).get('copy_file_path')
         # vcf_staging_area_path = self.vu.pretend_download_staging_file(
-        #     import_variation_params['staging_file_subdir_path'], self.scratch).get('copy_file_path')
+        #     import_variation_params['variation_file_subdir_path'], self.scratch).get('copy_file_path')
         
         # print("Scratch file path produced by DFU: {}".format(vcf_staging_area_path))
 

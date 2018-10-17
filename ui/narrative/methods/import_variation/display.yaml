@@ -34,25 +34,20 @@ parameters :
             Genome object reference
         short-hint : |
             Object reference format X/Y/Z
-    staging_file_subdir_path :
+    variation_file_subdir_path :
         ui-name : |
-            Input file path
+            Variation data file path
         short-hint : |
-            The path of your SNP input file.
-    location_file_subdir_path :
+            The path of your SNP variation data file.
+    variation_attributes_subdir_path :
         ui-name : |
-            Location file path
+            Variation attributes file path
         short-hint : |
-            The path of your location data.
-    will_perform_gwas :
+            The path of your variation attribute data.
+    variation_object_name :
         ui-name : |
-            GWAS analysis intended
+            Variation Object Name
         short-hint : |
-            Select if GWAS analysis is intended with this data.  
-    command_line_args :
-        ui-name : |
-            Command line arguments
-        short-hint : |
-            Semi-colon delimited command line arguments to be passed to PLINKv1.9
+            User specified Variation Object name  
 description : |
-    <p>This method will validate and import a VCF file.</p>
+    <p>This method will validate and import SNP variation data</p>

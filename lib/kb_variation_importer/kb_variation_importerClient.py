@@ -37,7 +37,7 @@ class kb_variation_importer(object):
         """
         :param import_snp_params: instance of type "import_snp_params"
            (Insert your typespec information here.) -> structure: parameter
-           "workspace_name" of String, parameter "staging_file_subdir_path"
+           "workspace_name" of String, parameter "variation_file_subdir_path"
            of String, parameter "will_perform_gwas" of Long
         :returns: instance of type "snp_import_results" -> structure:
            parameter "report_name" of String, parameter "report_ref" of

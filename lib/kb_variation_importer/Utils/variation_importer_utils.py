@@ -13,6 +13,7 @@ import zipfile
 from collections import Counter
 
 import pandas as pd
+
 from DataFileUtil.DataFileUtilClient import DataFileUtil
 from GenomeAnnotationAPI.GenomeAnnotationAPIServiceClient import \
     GenomeAnnotationAPI
@@ -127,7 +128,6 @@ class variation_importer_utils:
             'strains': []
         }
         for idx, row in locations.iterrows():
-            # print("Row: {}".format(row))
             population['strains'].append(
                 {
                     'source_id': str(row['id']),
@@ -145,7 +145,8 @@ class variation_importer_utils:
     def _validate_vcf(self, vcf_filepath, vcf_version):
         validation_output_dir = os.path.join(self.scratch, 'validation_' + str(uuid.uuid4()))
         os.mkdir(validation_output_dir)
-
+        ## TODO: Make this choice more robust.  
+        ## Attempt conversion to 4.1?
         if vcf_version >= 4.1:
             print("Using vcf_validator_linux...")
             validator_cmd = ["vcf_validator_linux"]
@@ -549,7 +550,7 @@ class variation_importer_utils:
         return {'stats_file_dir': file_output_directory,
                 'stats_img_dir': image_output_directory}
 
-    def _save_variation_to_ws(self, workspace_name, variation_obj, variation_filepath, kinship_matrix):
+    def _save_variation_to_ws(self, workspace_name, variation_object_name, variation_obj, variation_filepath, kinship_matrix):
         ws_id = self.dfu.ws_name_to_id(workspace_name)
         try:
             vcf_shock_return = self.dfu.file_to_shock({
@@ -568,7 +569,7 @@ class variation_importer_utils:
                 'objects': [{
                     'type': 'KBaseGwasData.Variations',
                     'data': variation_obj,
-                    'name': 'TestVariationImporterName'
+                    'name': variation_object_name
                 }]
             })[0]
 
@@ -586,22 +587,22 @@ class variation_importer_utils:
 
         try:
             vcf_filepath = self.pretend_download_staging_file(
-                params['staging_file_subdir_path'], self.scratch).get('copy_file_path')
+                params['variation_file_subdir_path'], self.scratch).get('copy_file_path')
 
             location_filepath = self.pretend_download_staging_file(
-                params['location_file_subdir_path'], self.scratch).get('copy_file_path')
+                params['variation_attributes_subdir_path'], self.scratch).get('copy_file_path')
 
         except Exception as e:
             raise Exception("Unable to download {} from staging area.".format(
-                params['staging_file_subdir_path']))
+                params['variation_file_subdir_path']))
 
         try:
             location_filepath = self.pretend_download_staging_file(
-                params['location_file_subdir_path'], self.scratch).get('copy_file_path')
+                params['variation_attributes_subdir_path'], self.scratch).get('copy_file_path')
 
         except Exception as e:
             raise Exception("Unable to download {} from staging area.".format(
-                params['location_file_subdir_path']))
+                params['variation_attributes_subdir_path']))
 
         # Check file size
         log("{} file size: {}".format(vcf_filepath, os.path.getsize(vcf_filepath)))
@@ -673,6 +674,7 @@ class variation_importer_utils:
             }
 
             variation_obj_ref = self._save_variation_to_ws(params['workspace_name'],
+                                                           params['variation_object_name'],
                                                            variation_object,
                                                            vcf_filepath,
                                                            kinship_matrix)
