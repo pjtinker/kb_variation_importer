@@ -274,7 +274,7 @@ class variation_importer_utils:
     def _generate_report(self, params, variation_results,
                          variation_file_path):
 
-        stats_results = self._generate_variation_stats(params['command_line_args'],
+        stats_results = self._generate_variation_stats(None,
                                                        variation_file_path)
 
         html_report = self._generate_html_report(variation_results, stats_results)

@@ -126,7 +126,7 @@ class kb_variation_importerTest(unittest.TestCase):
     #         })[0]
     #     assembly_ref = "%s/%s/%s" % (info[6], info[0], info[4])
 
-        return assembly_ref
+        # return assembly_ref
         
     def test_your_method(self):
         # Prepare test objects in workspace if needed using
@@ -145,8 +145,6 @@ class kb_variation_importerTest(unittest.TestCase):
             'genome_ref' : '18590/2/8',
             'variation_file_subdir_path' : 'test_with_chr.vcf',
             'variation_attributes_subdir_path' : 'population_locality.txt',
-            'will_perform_gwas' : 0,
-            'command_line_args' : None
         }
         
         ret = self.getImpl().import_variation(self.getContext(), params)[0]
