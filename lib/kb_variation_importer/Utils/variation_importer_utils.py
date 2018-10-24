@@ -590,7 +590,8 @@ class variation_importer_utils:
             # vcf_filepath = self.pretend_download_staging_file(
             #     params['variation_file_subdir_path'], self.scratch).get('copy_file_path')
 
-            vcf_filepath = self.dfu.download_staging_file(params['variation_file_subdir_path']).get('copy_file_path')
+            vcf_filepath = self.dfu.download_staging_file(
+                {'staging_file_subdir_path' : params['variation_file_subdir_path']}).get('copy_file_path')
 
             location_filepath = self.pretend_download_staging_file(
                 params['variation_attributes_subdir_path'], self.scratch).get('copy_file_path')

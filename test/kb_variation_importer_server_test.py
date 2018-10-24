@@ -104,7 +104,7 @@ class kb_variation_importerTest(unittest.TestCase):
     @staticmethod
     def fake_staging_download(params):
         scratch = '/kb/module/work/tmp/'
-        inpath = params['variation_file_subdir_path']
+        inpath = params['staging_file_subdir_path']
         shutil.copy('/kb/module/data/'+ inpath, scratch + inpath)
         return {'copy_file_path': scratch + inpath}
 

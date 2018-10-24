@@ -81,7 +81,6 @@ class kb_variation_importer:
         utility_params = self.config
         utility_params['token'] = ctx['token']
         utility_params['callback_url'] = self.callback_url
-
         self.vu = variation_importer_utils.variation_importer_utils(utility_params)
 
         try:
