@@ -105,28 +105,12 @@ class kb_variation_importerTest(unittest.TestCase):
     def fake_staging_download(params):
         scratch = '/kb/module/work/tmp/'
         inpath = params['variation_file_subdir_path']
-        shutil.copy('/kb/module/data/'+inpath, scratch+inpath)
-        return {'copy_file_path': scratch+inpath}
+        shutil.copy('/kb/module/data/'+ inpath, scratch + inpath)
+        return {'copy_file_path': scratch + inpath}
+
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
     @patch.object(DataFileUtil, "download_staging_file",
                   new=fake_staging_download)
-
-    # def _save_to_ws_and_report(self, ws_id, source, assembly_data):
-    #     dfu = DataFileUtil(os.environ['SDK_CALLBACK_URL'])
-    #     workspace_id = dfu.ws_name_to_id(self.getWsName())
-    #     print("Workspace id: {}".format(workspace_id))
-    #     info = dfu.save_objects(
-    #         {
-    #             'id': '18590', 
-    #             "objects": [{
-    #                 "type": "KBaseGenomeAnnotations.Assembly-3.0",
-    #                 "data": assembly_data,
-    #                 "name": ws_id
-    #             }]
-    #         })[0]
-    #     assembly_ref = "%s/%s/%s" % (info[6], info[0], info[4])
-
-        # return assembly_ref
         
     def test_your_method(self):
         # Prepare test objects in workspace if needed using

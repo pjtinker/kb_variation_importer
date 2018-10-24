@@ -202,6 +202,7 @@ class variation_importer_utils:
         contigs = {}
 
         # Contigs returns just a dict with key and contig_id
+        # Why did I have this here?  Is it necessary?
         for key, value in raw_contigs.iteritems():
             contigs[str(key)] = value['contig_id']
         return raw_contigs
@@ -586,8 +587,10 @@ class variation_importer_utils:
         valid_vcf_file = True
 
         try:
-            vcf_filepath = self.pretend_download_staging_file(
-                params['variation_file_subdir_path'], self.scratch).get('copy_file_path')
+            # vcf_filepath = self.pretend_download_staging_file(
+            #     params['variation_file_subdir_path'], self.scratch).get('copy_file_path')
+
+            vcf_filepath = self.dfu.download_staging_file(params['variation_file_subdir_path']).get('copy_file_path')
 
             location_filepath = self.pretend_download_staging_file(
                 params['variation_attributes_subdir_path'], self.scratch).get('copy_file_path')

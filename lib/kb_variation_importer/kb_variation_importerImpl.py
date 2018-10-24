@@ -84,16 +84,6 @@ class kb_variation_importer:
 
         self.vu = variation_importer_utils.variation_importer_utils(utility_params)
 
-
-        # This is the process if staging file rights have been granted
-        # vcf_staging_area_path = self.dfu.download_staging_file(
-        #     {'variation_file_subdir_path': import_variation_params['variation_file_subdir_path']
-        # }).get('copy_file_path')
-        # vcf_staging_area_path = self.vu.pretend_download_staging_file(
-        #     import_variation_params['variation_file_subdir_path'], self.scratch).get('copy_file_path')
-        
-        # print("Scratch file path produced by DFU: {}".format(vcf_staging_area_path))
-
         try:
             returnVal = self.vu.validate_vcf(import_variation_params)
         except Exception as e:

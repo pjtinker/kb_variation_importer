@@ -21,13 +21,10 @@ module kb_variation_importer {
         variation_object_name: name of created Variation Object
 
         optional params:
-        *** Filtering ***
         maf_threshold: percent threshold for filtering by maf
         geno_missingness: percent threshold to exclude SNPs based on missing calls
         indiv_missingness: percent threshold to remove individuals with missing calls
         hwe_threshold: p-value threshold to remove samples not in Hardy-Weinberg Equilibrium
-
-        *** Visualization ***
         plot_maf: generate histogram of minor allele frequencies
         plot_hwe: generate histogram of Hardy-Weinberg Equilibrium p-values
 
