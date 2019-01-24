@@ -8,8 +8,10 @@ MAINTAINER KBase Developer
 
 # RUN apt-get update
 
-RUN curl -O https://www.cog-genomics.org/static/bin/plink181012/plink_linux_x86_64.zip \
-    && unzip plink_linux_x86_64.zip \
+# RUN curl -O https://www.cog-genomics.org/static/bin/plink181012/plink_linux_x86_64.zip \
+ARG plinkurl=http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20181202.zip
+RUN curl $plinkurl -o plink.zip \
+    && unzip plink.zip \
     && mv plink /kb/deployment/bin 
 
 RUN git clone https://github.com/vcftools/vcftools.git \
